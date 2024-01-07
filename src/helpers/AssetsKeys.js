@@ -1,3 +1,4 @@
 export default {
-    TEXTURES: 'textures'
+    TEXTURES: 'textures',
+    IMAGES: 'images'
 };

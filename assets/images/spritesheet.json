@@ -1,183 +1,227 @@
 {
 	"frames": {
-		"ball": {
+		"Player_Idle1": {
 			"frame": {
-				"x": 1,
-				"y": 1,
-				"w": 14,
-				"h": 14
+				"x": 14,
+				"y": 22,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 14,
-				"h": 14
-			},
-			"sourceSize": {
-				"w": 14,
-				"h": 14
+				"w": 448,
+				"h": 392
 			}
 		},
-		"bonus": {
+		"Player_Idle2": {
 			"frame": {
-				"x": 17,
-				"y": 1,
-				"w": 70,
-				"h": 63
+				"x": 70,
+				"y": 22,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 70,
-				"h": 63
-			},
-			"sourceSize": {
-				"w": 70,
-				"h": 63
+				"w": 448,
+				"h": 392
 			}
 		},
-		"brick_blue": {
+		"Player_Idle3": {
 			"frame": {
-				"x": 89,
-				"y": 1,
-				"w": 67,
-				"h": 27
+				"x": 126,
+				"y": 22,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 67,
-				"h": 27
-			},
-			"sourceSize": {
-				"w": 67,
-				"h": 27
+				"w": 448,
+				"h": 392
 			}
 		},
-		"brick_green": {
+		"Player_Idle4": {
 			"frame": {
-				"x": 89,
-				"y": 30,
-				"w": 67,
-				"h": 27
+				"x": 182,
+				"y": 22,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 67,
-				"h": 27
-			},
-			"sourceSize": {
-				"w": 67,
-				"h": 27
+				"w": 448,
+				"h": 392
 			}
 		},
-		"brick_red": {
+		"Player_Idle5": {
 			"frame": {
-				"x": 89,
-				"y": 59,
-				"w": 67,
-				"h": 27
+				"x": 238,
+				"y": 22,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 67,
-				"h": 27
-			},
-			"sourceSize": {
-				"w": 67,
-				"h": 27
+				"w": 448,
+				"h": 392
 			}
 		},
-		"brick_yellow": {
+		"Player_Idle6": {
 			"frame": {
-				"x": 1,
-				"y": 88,
-				"w": 67,
-				"h": 27
+				"x": 294,
+				"y": 22,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 67,
-				"h": 27
-			},
-			"sourceSize": {
-				"w": 67,
-				"h": 27
+				"w": 448,
+				"h": 392
 			}
 		},
-		"platform_l": {
+		"Player_Run1": {
 			"frame": {
-				"x": 1,
-				"y": 117,
-				"w": 204,
-				"h": 24
+				"x": 14,
+				"y": 134,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 204,
-				"h": 24
-			},
-			"sourceSize": {
-				"w": 204,
-				"h": 24
+				"w": 448,
+				"h": 392
 			}
 		},
-		"platform_m": {
+		"Player_Run2": {
 			"frame": {
-				"x": 158,
-				"y": 1,
-				"w": 138,
-				"h": 24
+				"x": 71,
+				"y": 134,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 138,
-				"h": 24
-			},
-			"sourceSize": {
-				"w": 138,
-				"h": 24
+				"w": 448,
+				"h": 392
 			}
 		},
-		"platform_s": {
+		"Player_Run3": {
 			"frame": {
-				"x": 158,
-				"y": 27,
-				"w": 71,
-				"h": 24
+				"x": 128,
+				"y": 134,
+				"w": 28,
+				"h": 34
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 71,
-				"h": 24
+				"w": 448,
+				"h": 392
+			}
+		},
+		"Player_Run4": {
+			"frame": {
+				"x": 185,
+				"y": 134,
+				"w": 28,
+				"h": 34
 			},
-			"sourceSize": {
-				"w": 71,
-				"h": 24
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 448,
+				"h": 392
+			}
+		},
+		"Player_Run5": {
+			"frame": {
+				"x": 242,
+				"y": 134,
+				"w": 28,
+				"h": 34
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 448,
+				"h": 392
+			}
+		},
+		"Player_Run6": {
+			"frame": {
+				"x": 299,
+				"y": 134,
+				"w": 28,
+				"h": 34
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 448,
+				"h": 392
+			}
+		},
+		"Player_Run7": {
+			"frame": {
+				"x": 356,
+				"y": 134,
+				"w": 28,
+				"h": 34
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 448,
+				"h": 392
+			}
+		},
+		"Player_Run8": {
+			"frame": {
+				"x": 413,
+				"y": 134,
+				"w": 28,
+				"h": 34
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 448,
+				"h": 392
 			}
 		}
 	},

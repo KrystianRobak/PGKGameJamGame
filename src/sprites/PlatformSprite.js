@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from '../../lib/phaser'
 import AssetsKeys from '../helpers/AssetsKeys';
 import CollisionCategories from '../helpers/CollisionCategories';
 import Events from '../helpers/Events';

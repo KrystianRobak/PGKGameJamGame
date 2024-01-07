@@ -1,2 +1,0 @@
-/** @type {import("../typings/phaser") } */
-
