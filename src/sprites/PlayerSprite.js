@@ -10,7 +10,11 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
 export default class PlayerSprite extends Phaser.Physics.Matter.Sprite {
     constructor(scene, x, y) {
-        super(scene.matter.world, x, y, AssetsKeys.TEXTURES, "Player_Idle1");
+        super(scene.matter.world, x, y, AssetsKeys.TEXTURES, "Player_Idle1", {
+            iretia:Infinity,
+            mass: 0
+
+        });
 
         this.setFriction(0, 0);
         this.setBounce(0);
@@ -26,26 +30,18 @@ export default class PlayerSprite extends Phaser.Physics.Matter.Sprite {
             CollisionCategories.PLATFORM
         );
 
-        scene.events.on('hookcollision', this.handleHookCollision, this);
-        this.ShootHook = this.ShootHook.bind(this);
+
     }
 
-    handleHookCollision(player, hook) {
-
+    addHook(hook) {
+        this.hook = hook;
+        scene.matter.add.contraint()
     }
 
     ReleaseHook() {
         
     }
 
-    ShootHook() {
-        this.hook = this.scene.matter.add.rectangle(
-            this.body.position.x + (20 * 2) * Math.cos(angle),
-            this.body.position.y + (20 * 2) * Math.sin(angle),
-            10,
-            10
-        );
-    }
 
     IncVelocityX(value) {
         this.setVelocityX(clamp(this.body.velocity.x + value, minSpeedValue, maxSpeedValue));

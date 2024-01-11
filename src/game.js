@@ -11,11 +11,9 @@ export default new Phaser.Game({
     physics: {
         default: 'matter',
         matter: {
-            gravity: {
-                y: 0.5
-            },
-            framerate: 30
-            //debug: true
+            
+            framerate: 30,
+            debug: true
         }
     },
     scene: [GameScene]

@@ -41,8 +41,23 @@ export default class GameScene extends Phaser.Scene {
         this.player.createAnimations();
         this.player.startAnimation();
         
+        console.log(Phaser.Physics.Matter.MatterPhysics.query)
+
         // Set up click event
-        this.chain = [];
+        this.rayCast = this.matter.add.rectangle(
+            startX,
+            startY,
+            configs.distance,
+            1,
+            {
+                angle:angle,
+                render: {
+                    visible: true,
+                    color:0xff0000
+                },
+                isStatic: true
+            } // Red color
+        );
         this.curr = null;
 
         this.input.on('pointerdown',() => {
@@ -50,78 +65,26 @@ export default class GameScene extends Phaser.Scene {
             var angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.input.x, this.input.y);
             // Calculate the distance from the player to the cursor
             // Calculate the starting position of the rectangle
-            var startX = this.player.x + (200) * Math.cos(angle);
-            var startY = this.player.y + (200) * Math.sin(angle);
+            var startX = this.player.x + configs.distance/2 * Math.cos(angle);
+            var startY = this.player.y + configs.distance/2 * Math.sin(angle);
             // Add a rectangle from the player to the cursor
-            
-
-
-
-
-            
-
-
-
-            const group = this.matter.world.nextGroup(true);
-            
-            const hook = this.matter.add.stack(startX, startY, 15, 1, 0, 30, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
-                collisionFilter: { group: group },
-                chamfer: 5,
-                density: 0.005,
-                frictionAir: 0.05
-            }));
-
-            this.matter.add.chain(hook, 0.3, 0, -0.3, 0, {
-                stiffness: 1,
-                length: 0,
-                render: {
-                    visible: true
-                }
-            });
-
-
-            // this.rectangle = this.add.rectangle(
-            //     startX,
-            //     startY,
-            //     400,
-            //     20,
-            //     0xff0000 // Red color
-            // );
-            // for(var i = 0 ; i < configs.distance/30; i++) {
-            //     this.curr = this.matter.add.rectangle(
-            //         startX,
-            //         startY,
-            //         10,
-            //         5,
-            //         {
-            //             collisionFilter: { group: group },
-            //             chamfer: 5,
-            //             density: 0.005,
-            //             frictionAir: 0.05,
-            //             render: {
-            //                 fillStyle: '#ff0000', // Set the fill color
-            //             }
-            //         }// Red color
-            //     );
-            //     //this.curr.setAngle(Phaser.Math.RadToDeg(angle));
-            //     console.log("Chain element:", this.chain[i-1]);
-            //     console.log("Current element:", this.curr);
-            //     if(i > 0 && this.chain[i-1]){
-            //         this.matter.add.constraint(this.chain[i-1], this.curr);
-            //     }
-                
-            //     this.chain[i] = this.curr;
-            //     startX = this.player.x + (200 + i*30) * Math.cos(angle);
-            //     startY = this.player.y + (200 + i*30) * Math.sin(angle);
-            // }
+            console.log(angle);
+            this.rectangle
             
         },this);
 
         this.input.on('pointerup', function () {
-            // Calculate the angle between the player and the cursor
+
+            this.constraintChain.forEach(element => {
+                this.matter.world.removeConstraint(element);
+            });
             for(var i = 0 ; i < this.chain.length; i++) {
-               //this.chain[i].destroy();
+               this.matter.world.remove(this.chain[i]);
             }
+            this.chain = [];
+            this.constraintChain = [];
+            console.log(this.chain)
+            console.log(this.constraintChain)
         }, this);
     }
 
@@ -161,6 +124,6 @@ export default class GameScene extends Phaser.Scene {
                 this.player.DecVelocityX(-0.05);
             this.player.anims.play('idle', true);
         }
-
     }
+
 }
