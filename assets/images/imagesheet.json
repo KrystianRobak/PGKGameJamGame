@@ -4,7 +4,7 @@
 			"frame": {
 				"x": 343,
 				"y": 8,
-				"w": 40,
+				"w": 400,
 				"h": 40
 			},
 			"rotated": false,
@@ -36,8 +36,8 @@
 			"frame": {
 				"x": 100,
 				"y": 50,
-				"w": 10,
-				"h": 5
+				"w": 50,
+				"h": 50
 			},
 			"rotated": false,
 			"trimmed": false,

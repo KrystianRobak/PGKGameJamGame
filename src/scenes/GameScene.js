@@ -1,14 +1,14 @@
 import Phaser from '../../lib/phaser';
 import AssetsKeys from '../helpers/AssetsKeys';
 import PlayerSprite from '../sprites/PlayerSprite';
-import ProceduralGenerator from '../helpers/LevelGen/ProceduralGenerator';
 import spritesheet from '../../assets/images/spritesheet.png';
 import spritesheetjson from '../../assets/images/spritesheet.json';
 import imagesheet from '../../assets/images/images.png';
 import imagesheetjson from '../../assets/images/imagesheet.json';
+import charsheet from '../../assets/images/charsheet.json';
+import sheet from '../../assets/images/sheet.png';
 import CollisionCategories from '../helpers/CollisionCategories';
 import configs from '../helpers/configs';
-
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -17,7 +17,7 @@ export default class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.atlas(AssetsKeys.IMAGES, imagesheet,imagesheetjson);
-        this.load.atlas(AssetsKeys.TEXTURES, spritesheet, spritesheetjson);
+        this.load.atlas(AssetsKeys.TEXTURES, sheet, charsheet);
         this.load.image('ground', 'https://labs.phaser.io/src/games/firstgame/assets/platform.png');
     }
 
@@ -30,7 +30,7 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#000000');
 
         // Add platforms
-        const platforms = this.createPlatforms();
+        this.platforms = this.createPlatforms();
 
         this.player = new PlayerSprite(
             this,
@@ -38,92 +38,51 @@ export default class GameScene extends Phaser.Scene {
             this.game.scale.gameSize.height / 2
         );
 
-        this.player.createAnimations();
-        this.player.startAnimation();
-        
-        console.log(Phaser.Physics.Matter.MatterPhysics.query)
+        this.addCollisions();
+       // this.player.createAnimations();
+       // this.player.startAnimation();
+    }
 
-        // Set up click event
-        this.rayCast = this.matter.add.rectangle(
-            startX,
-            startY,
-            configs.distance,
-            1,
-            {
-                angle:angle,
-                render: {
-                    visible: true,
-                    color:0xff0000
-                },
-                isStatic: true
-            } // Red color
-        );
-        this.curr = null;
-
-        this.input.on('pointerdown',() => {
-            // Calculate the angle between the player and the cursor
-            var angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.input.x, this.input.y);
-            // Calculate the distance from the player to the cursor
-            // Calculate the starting position of the rectangle
-            var startX = this.player.x + configs.distance/2 * Math.cos(angle);
-            var startY = this.player.y + configs.distance/2 * Math.sin(angle);
-            // Add a rectangle from the player to the cursor
-            console.log(angle);
-            this.rectangle
-            
-        },this);
-
-        this.input.on('pointerup', function () {
-
-            this.constraintChain.forEach(element => {
-                this.matter.world.removeConstraint(element);
-            });
-            for(var i = 0 ; i < this.chain.length; i++) {
-               this.matter.world.remove(this.chain[i]);
+    addCollisions() {
+        this.matter.world.on("collisionstart", (event, bodyA, bodyB) => {
+            if ((bodyA.label == "laser" && bodyB.label == "platform") || (bodyB.label == "laser" && bodyA.label == "platform")) {
+                this.events.emit('hookHit');
+                this.player.shootingHook = false;
             }
-            this.chain = [];
-            this.constraintChain = [];
-            console.log(this.chain)
-            console.log(this.constraintChain)
-        }, this);
+        });
     }
 
     createPlatforms() {
-        // Add platforms to the scene
-        const platform1 = this.matter.add.image(200, 310, 'ground').setStatic(true);
-        const platform2 = this.matter.add.image(400, 100, 'ground').setStatic(true);
+        const platformArrPos = [
+            {
+                x:200,
+                y:310
+            },
+            {
+                x:400,
+                y:100
+            },
+            {
+                x:100,
+                y:900
+            },
+            {
+                x:500,
+                y:900
+            }
+        ]
 
-        platform1.label = CollisionCategories.PLATFORM;
-        platform2.label = CollisionCategories.PLATFORM;
+        var platformArr = []
 
-        return [platform1, platform2];
+        platformArrPos.forEach(element => {
+            platformArr.push(this.matter.add.image(element.x, element.y,AssetsKeys.IMAGES,'black', {label:"platform"}).setStatic(true));
+        })
+
+        return platformArr;
     }
 
     update() {
-        if (this.cursors.up.isDown)
-        {
-            this.player.setVelocityY(-2);
-        }
-        if (this.cursors.left.isDown)
-        {
-            this.player.IncVelocityX(-0.1);
-            this.player.setFlipX(true);
-            this.player.anims.play('run', true);
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.player.IncVelocityX(0.1);
-            this.player.setFlipX(false);
-            this.player.anims.play('run', true);
-        }
-        else
-        {
-            if(this.player.body.velocity.x < 0)
-                this.player.DecVelocityX(0.05);
-            else
-                this.player.DecVelocityX(-0.05);
-            this.player.anims.play('idle', true);
-        }
+        this.player.stateMachine.step();
+        console.log(this.player.stateMachine.state)
     }
-
 }

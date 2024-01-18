@@ -1,3 +1,4 @@
+import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 import GameScene from './scenes/GameScene'
 
 export default new Phaser.Game({
@@ -11,10 +12,33 @@ export default new Phaser.Game({
     physics: {
         default: 'matter',
         matter: {
-            
             framerate: 30,
-            debug: true
+            // debug: {
+            //     showBounds: false,
+            //     boundsColor: 0xffffff,
+            //     showBody: true,
+            //     showStaticBody: true,
+            //     showInternalEdges: true,
+            //     showSensors: true,
+            //     sensorFillColor: 0x0d177b,
+            //     sensorLineColor: 0x1327e4,
+    
+            //     showPositions: true,
+            //     positionSize: 4,
+            //     positionColor: 0xe042da,
+            //     showCollisions: true,
+            //     collisionColor: 0xf5950c,
+            // }
         }
     },
-    scene: [GameScene]
+    scene: GameScene,
+    plugins: {
+        scene: [
+            {
+                plugin: PhaserMatterCollisionPlugin,
+                key: "matterCollision",
+                mapping: "matterCollision"
+            }
+        ]
+    }
 });
