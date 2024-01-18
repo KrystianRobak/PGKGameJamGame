@@ -8,13 +8,13 @@ export default class IdleRunningState extends State {
     execute(scene, player) {
         if (scene.cursors.left.isDown)
         {
-            player.IncVelocityX(-0.1);
+            player.IncVelocityX(-0.3);
             player.setFlipX(true);
             player.anims.play('run', true);
         }
         else if (scene.cursors.right.isDown)
         {
-            player.IncVelocityX(0.1);
+            player.IncVelocityX(0.3);
             player.setFlipX(false);
             player.anims.play('run', true);
         }

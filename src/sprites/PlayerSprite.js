@@ -141,7 +141,7 @@ export default class PlayerSprite extends Phaser.Physics.Matter.Sprite {
             frames: this.scene.anims.generateFrameNames(AssetsKeys.TEXTURES, {
                 prefix: 'Player_Idle',
                 start: 1,
-                end: 6,
+                end: 4,
                 zeroPad: 1,
             }),
             frameRate: 10,

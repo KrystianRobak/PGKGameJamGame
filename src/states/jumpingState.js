@@ -2,6 +2,7 @@ import State from "./state";
 
 export default class JumpingState extends State {
     enter(scene, player, jumpAmount) {
+        this.player = player;
         player.anims.stop();
         this.jumpAmount = jumpAmount;
         this.currJump = 1;
@@ -11,18 +12,18 @@ export default class JumpingState extends State {
 
     handleCollision(event, bodyA, bodyB) {
         if (!this.hitHook && ((bodyA.label == "laser" && bodyB.label == "platform") || (bodyB.label == "laser" && bodyA.label == "platform"))) {
-            player.stateMachine.transition('idle');
+            this.player.stateMachine.transition('idle');
             this.hitHook = true;
         }
     }
 
     execute(scene, player) {
         if (scene.cursors.left.isDown) {
-            player.IncVelocityX(-0.2);
+            player.IncVelocityX(-2);
             player.setFlipX(true);
             player.anims.play('run', true);
         } else if (scene.cursors.right.isDown) {
-            player.IncVelocityX(0.2);
+            player.IncVelocityX(2);
             player.setFlipX(false);
             player.anims.play('run', true);
         }

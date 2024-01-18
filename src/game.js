@@ -1,5 +1,8 @@
 import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 import GameScene from './scenes/GameScene'
+import MainMenuScene from './scenes/MainMenuScene';
+import LevelSelectionScene from './scenes/LevelSelectionScene';
+import PauseScene from './scenes/PauseScene';
 
 export default new Phaser.Game({
     type: Phaser.AUTO,
@@ -31,7 +34,7 @@ export default new Phaser.Game({
             // }
         }
     },
-    scene: GameScene,
+    scene: [MainMenuScene,GameScene,LevelSelectionScene,PauseScene],
     plugins: {
         scene: [
             {
