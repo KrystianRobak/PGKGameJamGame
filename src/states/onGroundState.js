@@ -8,19 +8,19 @@ export default class IdleRunningState extends State {
     execute(scene, player) {
         if (scene.cursors.left.isDown)
         {
-            player.IncVelocityX(-0.3);
+            player.IncVelocityX(-1);
             player.setFlipX(true);
             player.anims.play('run', true);
         }
         else if (scene.cursors.right.isDown)
         {
-            player.IncVelocityX(0.3);
+            player.IncVelocityX(1);
             player.setFlipX(false);
             player.anims.play('run', true);
         }
         if (scene.cursors.up.isDown) {
-            player.setVelocityY(-10);
-            player.stateMachine.transition('jump', 2);
+            player.IncVelocityY(-10);
+            player.stateMachine.transition('jump');
             return;
         }
         else

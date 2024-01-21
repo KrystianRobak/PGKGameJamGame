@@ -1,4 +1,5 @@
 export default {
     TEXTURES: 'textures',
-    IMAGES: 'images'
+    IMAGES: 'images',
+    PLAYER: 'player'
 };
