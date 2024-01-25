@@ -20,6 +20,7 @@ export default class PlayerSprite extends Phaser.Physics.Matter.Sprite {
         super(scene.matter.world, x, y, AssetsKeys.PLAYER, "Player_Idle1", {label:labelName});
 
         this.hook = new Hook(this.scene, this)
+        this.jumpFlip = true;
 
         this.controller = controller;
 

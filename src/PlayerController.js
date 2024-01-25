@@ -6,6 +6,8 @@ export default class PlayerController {
         this.scene = scene;
         this.playerSprite = new PlayerSprite(this.scene,0,this.scene.game.scale.gameSize.height *0.2, this, 'player');
 
+        scene.add.existing(this.playerSprite);
+
         this.blocked = {
             left: false,
             right: false,
@@ -14,20 +16,19 @@ export default class PlayerController {
         const sx = this.playerSprite.width / 2;
         const sy = this.playerSprite.height / 2;
 
-        const playerBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, sy, this.playerSprite.width * 0.75, this.playerSprite.height);
-        playerBody.render.sprite.texture = this.playerSprite.frame.texture;
+        const playerBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, sy, this.playerSprite.width, this.playerSprite.height);
 
         this.sensors = {
             bottom: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, this.playerSprite.height, sx, 10, { isSensor: true , label: 'bottom'}),
-            left: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx - this.playerSprite.width * 0.40, sy, 5, this.playerSprite.height * 0.25, { isSensor: true, label: 'left' }),
-            right: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx + this.playerSprite.width * 0.40, sy, 5, this.playerSprite.height * 0.25, { isSensor: true, label: 'right' })
+            left: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx - this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height * 0.25, { isSensor: true, label: 'left' }),
+            right: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx + this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height * 0.25, { isSensor: true, label: 'right' })
         };
 
         const compoundBody = Phaser.Physics.Matter.Matter.Body.create({
             parts: [
                 playerBody, this.sensors.bottom, this.sensors.left, this.sensors.right
             ],
-            friction: 0.02
+            friction: 0.01
         });
 
         this.playerSprite
@@ -62,14 +63,15 @@ export default class PlayerController {
 
                 if(bodyA.label === 'right' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'right') {
                     if(this.playerSprite.stateMachine.state != 'hook'){
-                        this.playerSprite.stateMachine.transition('sliding')
                         this.blocked.right = true;
+                        this.playerSprite.stateMachine.transition('sliding')
                     }
                 }
                 else if(bodyA.label === 'left' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'left') {
                     if(this.playerSprite.stateMachine.state != 'hook'){
-                        this.playerSprite.stateMachine.transition('sliding')
                         this.blocked.left = true;
+                        this.playerSprite.stateMachine.transition('sliding')
+
                     }
                 }
             }
@@ -86,20 +88,18 @@ export default class PlayerController {
                     if (this.blocked.left || this.blocked.right) {
                         this.playerSprite.stateMachine.transition('sliding');
                     }
+                    else 
+                        this.playerSprite.stateMachine.transition('falling')
                 }
 
                 if (bodyA.label === 'right' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'right') {
-                    if (this.playerSprite.stateMachine.state == 'sliding') {
                         console.log("siema")
                         this.blocked.right = false;
-                        this.playerSprite.stateMachine.transition('jump');
-                    }
+                        this.playerSprite.stateMachine.transition('falling');
                 } else if (bodyA.label === 'left' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'left') {
-                    if (this.playerSprite.stateMachine.state == 'sliding') {
                         console.log("siema")
                         this.blocked.left = false;
-                        this.playerSprite.stateMachine.transition('jump');
-                    }
+                        this.playerSprite.stateMachine.transition('falling');
                 }
             }
         }, this);

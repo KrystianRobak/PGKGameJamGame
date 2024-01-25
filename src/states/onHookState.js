@@ -2,7 +2,6 @@ import State from "./state";
 
 export default class onGrapplingHookState extends State {
     enter(scene, player) {
-
         player.anims.stop();
     }
     
@@ -18,11 +17,15 @@ export default class onGrapplingHookState extends State {
                 player.anims.play('hook', true);
             }
             if (scene.cursors.up.isDown) {
-                player.setVelocityY(-10);
-                player.hook.DeleteHook();
-            
-                player.stateMachine.transition('jump');
-                return;
+                if(player.jumpFlip) {
+                    player.setVelocityY(-10);
+                    player.hook.DeleteHook();
+                    player.jumpFlip = false;
+                    player.stateMachine.transition('jump');
+                }
+            }
+            if(scene.cursors.up.isUp) {
+                player.jumpFlip = true;
             }
         }
    }  

@@ -44,18 +44,18 @@ export default class EnemyController {
 
                 if(bodyA.label === 'enemy' && bodyB.label === 'jumpWaypoint' || bodyA.label === 'jumpWaypoint' && bodyB.label === 'enemy') {
                     if(bodyA.label === 'enemy') {
-                        bodyA.gameObject.onEntered();
+                        bodyA.gameObject.onEntered(bodyB.gameObject);
                     }
                     if(bodyB.label === 'enemy') {
-                        bodyA.gameObject.onEntered();
+                        bodyA.gameObject.onEntered(bodyB.gameObject);
                     }
                 }
                 if(bodyA.label === 'enemy' && bodyB.label === 'hookWaypoint' || bodyA.label === 'hookWaypoint' && bodyB.label === 'enemy') {
                     if(bodyA.label === 'enemy') {
-                        bodyA.gameObject.onEntered();
+                        bodyA.gameObject.onEntered(bodyB.gameObject);
                     }
                     if(bodyB.label === 'enemy') {
-                        bodyA.gameObject.onEntered();
+                        bodyA.gameObject.onEntered(bodyB.gameObject);
                     }
                 }
             }

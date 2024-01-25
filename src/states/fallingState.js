@@ -3,7 +3,7 @@ import State from "./state";
 export default class FallingState extends State {
     enter(scene, player) {
         player.anims.stop()
-        player.anims.play('falling', true);
+       // player.anims.play('falling', true);
     }
 
     execute(scene, player) {

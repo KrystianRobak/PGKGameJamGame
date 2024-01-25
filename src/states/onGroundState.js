@@ -10,16 +10,21 @@ export default class IdleRunningState extends State {
             if (scene.cursors.left.isDown) {
                 player.IncVelocityX(-1);
                 player.setFlipX(true);
-                player.anims.play('run', true);
+                //player.anims.play('run', true);
             } else if (scene.cursors.right.isDown) {
                 player.IncVelocityX(1);
                 player.setFlipX(false);
-                player.anims.play('run', true);
+                //player.anims.play('run', true);
             }
             if (scene.cursors.up.isDown) {
+                if(player.jumpFlip) {
                 player.setVelocityY(-10);
                 player.stateMachine.transition('jump');
-                return;
+                player.jumpFlip = false;
+                }
+            }
+            if(scene.cursors.up.isUp) {
+                player.jumpFlip = true;
             }
         }
         else
@@ -28,7 +33,7 @@ export default class IdleRunningState extends State {
                 player.DecVelocityX(0.05);
             else
                 player.DecVelocityX(-0.05);
-            player.anims.play('idle', true);
+            //player.anims.play('idle', true);
         }
    }  
 

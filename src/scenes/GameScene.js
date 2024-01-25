@@ -56,6 +56,8 @@ export default class GameScene extends Phaser.Scene {
 
         this.playerController = new PlayerController(this);
         this.enemyController = new EnemyController(this, 1);
+
+        console.log(this.playerController.playerSprite)
         //this.cameras.main.startFollow(this.playerController.playerSprite);
         //this.player.createAnimations();
     }
@@ -120,6 +122,5 @@ export default class GameScene extends Phaser.Scene {
         this.playerController.playerSprite.stateMachine.step();
         //console.log(this.playerController.playerSprite.stateMachine.state);
         this.enemyController.UpdateEnemies();
-
     }
 }
