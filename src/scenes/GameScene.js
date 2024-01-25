@@ -12,6 +12,8 @@ import backgroundFar from '../../assets/images/background_2.png';
 import backgroundClose from '../../assets/images/background_3.png';
 
 import backgroundGradient from '../../assets/images/background_4.png';
+import EnemyController from '../EnemyController';
+
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -53,7 +55,7 @@ export default class GameScene extends Phaser.Scene {
         this.platforms = this.createPlatforms();
 
         this.playerController = new PlayerController(this);
-
+        this.enemyController = new EnemyController(this, 1);
         //this.cameras.main.startFollow(this.playerController.playerSprite);
         //this.player.createAnimations();
     }
@@ -76,7 +78,20 @@ export default class GameScene extends Phaser.Scene {
             {
                 x:500,
                 y:900
+            },
+            {
+                x:700,
+                y:900
+            },
+            {
+                x:1250,
+                y:500
+            },
+            {
+                x:700,
+                y:500
             }
+
         ]
 
         var platformArr = []
@@ -85,6 +100,8 @@ export default class GameScene extends Phaser.Scene {
             var platform = this.matter.add.image(element.x, element.y, AssetsKeys.IMAGES, 'black', { label: "platform" }).setStatic(true);
             platformArr.push(platform);
         })
+
+        platformArr[5].setRotation(1.57079633);
 
         return platformArr;
     }
@@ -101,5 +118,8 @@ export default class GameScene extends Phaser.Scene {
         // this.backgroundClose.tilePositionY += this.playerController.playerSprite.body.velocity.y * 0.05;
 
         this.playerController.playerSprite.stateMachine.step();
+        //console.log(this.playerController.playerSprite.stateMachine.state);
+        this.enemyController.UpdateEnemies();
+
     }
 }

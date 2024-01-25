@@ -16,12 +16,12 @@ const minSpeedValue = -8;
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
 export default class PlayerSprite extends Phaser.Physics.Matter.Sprite {
-    constructor(scene, x, y, playerController) {
-        super(scene.matter.world, x, y, AssetsKeys.PLAYER, "Player_Idle1");
+    constructor(scene, x, y, controller, labelName) {
+        super(scene.matter.world, x, y, AssetsKeys.PLAYER, "Player_Idle1", {label:labelName});
 
         this.hook = new Hook(this.scene, this)
 
-        this.controller = playerController;
+        this.controller = controller;
 
         this.stateMachine = new StateMachine('idle', {
             idle: new IdleRunningState(),
@@ -50,6 +50,10 @@ export default class PlayerSprite extends Phaser.Physics.Matter.Sprite {
 
     IncVelocityY(value) {
         this.setVelocityY(this.body.velocity.y + value);
+    }
+
+    setPlayerTexture(key, frame) {
+        this.setTexture(key, frame);
     }
 
     createAnimations() {

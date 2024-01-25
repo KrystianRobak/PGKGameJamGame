@@ -1,4 +1,9 @@
-export default class JumpWaypoint extends AiWaypoint {
+import AiWaypoint from "./waypoint"
+
+export default class JumpWaypoint extends AiWaypoint  {
+    constructor(scene, x, y) {
+        super(scene, x, y, 'jumpWaypoint')
+    }
     onEntered() {
     
     }

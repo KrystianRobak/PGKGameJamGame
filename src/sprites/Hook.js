@@ -15,55 +15,57 @@ export default class Hook{
         this.scene = scene;
         this.player = player;
 
-        this.CreateHookBinds();
-
     }
 
     CreateHookBinds() {
         this.scene.input.on('pointerdown', (pointer) => {
-            if (!this.shootingHook) {
-                this.shootingHook = true;
-                const pointerX = pointer.worldX;
-                const pointerY = pointer.worldY;
- 
-                const playerX = this.player.x;
-                const playerY = this.player.y;
- 
-                const shootLaserRecursive = (index) => {
-                    if (index < 15 && this.shootingHook) {
-                        this.rayCast = this.shootLaser(playerX, playerY, pointerX, pointerY, index);
-                        if (index === 0) {
-                            this.constrinatChain.push(this.scene.matter.add.constraint(this.player, this.rayCast));
-                        } else {
-                             this.constrinatChain.push(this.scene.matter.add.constraint(this.rayCast, this.rayCastChain[index - 1]));
-                        }
-                        this.rayCastChain.push(this.rayCast);
-
-                        this.rayCast.setOnCollideWith(this.scene.platforms, () => {
-                            if (!this.player.shootingHook) {
-                                this.shootingHook = false;
-                                this.rayCast.setStatic(true);
-                                this.player.stateMachine.transition('hook');
-                                console.log('hi');
-                            }
-                        });
- 
-                        setTimeout(() => {
-                            if (this.rayCast.body) {
-                                this.rayCast.setCollisionCategory(null);
-                            }
-                            shootLaserRecursive(index + 1);
-                        }, 1);
-                    }
-                };
- 
-                shootLaserRecursive(0);
-            }
+            this.ShootHook(pointer);
         });
  
         this.scene.input.on('pointerup', () => {
             this.DeleteHook();
         }, this);
+    }
+
+    ShootHook(pointer) {
+        if (!this.shootingHook) {
+            this.shootingHook = true;
+            const pointerX = pointer.worldX;
+            const pointerY = pointer.worldY;
+
+            const playerX = this.player.x;
+            const playerY = this.player.y;
+
+            const shootLaserRecursive = (index) => {
+                if (index < 15 && this.shootingHook) {
+                    this.rayCast = this.shootLaser(playerX, playerY, pointerX, pointerY, index);
+                    if (index === 0) {
+                        this.constrinatChain.push(this.scene.matter.add.constraint(this.player, this.rayCast));
+                    } else {
+                         this.constrinatChain.push(this.scene.matter.add.constraint(this.rayCast, this.rayCastChain[index - 1]));
+                    }
+                    this.rayCastChain.push(this.rayCast);
+
+                    this.rayCast.setOnCollideWith(this.scene.platforms, () => {
+                        if (!this.player.shootingHook) {
+                            this.shootingHook = false;
+                            this.rayCast.setStatic(true);
+                            this.player.stateMachine.transition('hook');
+                            console.log('hi');
+                        }
+                    });
+
+                    setTimeout(() => {
+                        if (this.rayCast.body) {
+                            this.rayCast.setCollisionCategory(null);
+                        }
+                        shootLaserRecursive(index + 1);
+                    }, 1);
+                }
+            };
+
+            shootLaserRecursive(0);
+        }
     }
 
     DeleteHook() {

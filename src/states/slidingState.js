@@ -8,17 +8,19 @@ export default class SlidingState extends State {
     }
 
     execute(scene, player) {
-        if (scene.cursors.up.isDown && player.controller.blocked.left)
-        {
-            player.IncVelocityY(-10);
-            player.setVelocityX(2);
-            player.stateMachine.transition('jump')
-        }
-        else if (scene.cursors.up.isDown && player.controller.blocked.right)
-        {
-            player.IncVelocityY(-10);
-            player.setVelocityX(-2);
-            player.stateMachine.transition('jump')
+        if(player.label != 'enemy') {
+            if (scene.cursors.up.isDown && player.controller.blocked.left)
+            {
+                player.setVelocityY(-10);
+                player.setVelocityX(2);
+                player.stateMachine.transition('jump')
+            }
+            else if (scene.cursors.up.isDown && player.controller.blocked.right)
+            {
+                player.setVelocityY(-10);
+                player.setVelocityX(-2);
+                player.stateMachine.transition('jump')
+            }
         }
     }
 }
