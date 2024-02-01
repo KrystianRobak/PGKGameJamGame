@@ -32,7 +32,7 @@ export default class Hook{
             this.shootingHook = true;
             const pointerX = pointer.worldX;
             const pointerY = pointer.worldY;
-
+            console.log(pointer.worldX)
             const playerX = this.player.x;
             const playerY = this.player.y;
 
@@ -51,7 +51,6 @@ export default class Hook{
                             this.shootingHook = false;
                             this.rayCast.setStatic(true);
                             this.player.stateMachine.transition('hook');
-                            console.log('hi');
                         }
                     });
 

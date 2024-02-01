@@ -8,13 +8,9 @@ export default class EnemyController {
         this.enemiesAmount = amount;
 
         this.waypoints = [
-            new JumpWaypoint(this.scene, 900, 870),
-            new JumpWaypoint(this.scene, 1200, 650),
-            new JumpWaypoint(this.scene, 900, 400),
-            new JumpWaypoint(this.scene, 600, 400),
-            new JumpWaypoint(this.scene, 400, 300),
-            new JumpWaypoint(this.scene, 100, 250),
-            new JumpWaypoint(this.scene, 500, 50)
+            new JumpWaypoint(this.scene, 500, 650),
+            new HookWaypoint(this.scene, 800, 650, 200, 200),
+            new JumpWaypoint(this.scene, 800, 400),
         ]
 
         this.enemiesProgress = [];
@@ -30,6 +26,7 @@ export default class EnemyController {
         for(var i = 0;i < this.enemiesAmount; i++) {
             var enemySprite = new PlayerSprite(this.scene,0,this.scene.game.scale.gameSize.height / 2, this, 'enemy');
             enemySprite.label = 'enemy';
+            enemySprite.setFixedRotation();
             this.scene.add.existing(enemySprite);
             this.enemiesProgress.push([enemySprite, this.waypoints[0]]);
         }
@@ -41,21 +38,26 @@ export default class EnemyController {
             {
                 const bodyA = event.pairs[i].bodyA;
                 const bodyB = event.pairs[i].bodyB;
-
-                if(bodyA.label === 'enemy' && bodyB.label === 'jumpWaypoint' || bodyA.label === 'jumpWaypoint' && bodyB.label === 'enemy') {
-                    if(bodyA.label === 'enemy') {
-                        bodyA.gameObject.onEntered(bodyB.gameObject);
-                    }
-                    if(bodyB.label === 'enemy') {
-                        bodyA.gameObject.onEntered(bodyB.gameObject);
+                if ((bodyA.label === 'enemy' && bodyB.label === 'traps') || (bodyA.label === 'traps' && bodyB.label === 'enemy')) {
+                    const enemyIndex = this.enemiesProgress.findIndex((enemyProgress) => enemyProgress[0].body === bodyA || enemyProgress[0].body === bodyB);
+                    if (enemyIndex !== -1) {
+                        const [enemySprite] = this.enemiesProgress.splice(enemyIndex, 1);
+                        enemySprite[0].destroy();
                     }
                 }
-                if(bodyA.label === 'enemy' && bodyB.label === 'hookWaypoint' || bodyA.label === 'hookWaypoint' && bodyB.label === 'enemy') {
+                if(bodyA.label === 'enemy' && bodyB.label === 'Waypoint' || bodyA.label === 'Waypoint' && bodyB.label === 'enemy') {
                     if(bodyA.label === 'enemy') {
-                        bodyA.gameObject.onEntered(bodyB.gameObject);
+                        bodyB.gameObject.onEntered(bodyB.gameObject);
                     }
                     if(bodyB.label === 'enemy') {
                         bodyA.gameObject.onEntered(bodyB.gameObject);
+                    }
+                    const waypointBody = bodyA.label === 'Waypoint' ? bodyA : bodyB;
+                    console.log(waypointBody)
+                    const waypointIndex = this.waypoints.indexOf(waypointBody.gameObject);
+                    if (waypointIndex !== -1) {
+                        this.waypoints.splice(waypointIndex, 1);
+                        waypointBody.destroy();
                     }
                 }
             }
@@ -95,13 +97,4 @@ export default class EnemyController {
             }
         }
     }
-
 }
-
-
-
-
-
-
-
-

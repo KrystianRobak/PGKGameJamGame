@@ -2,7 +2,7 @@ import AiWaypoint from "./waypoint"
 
 export default class JumpWaypoint extends AiWaypoint  {
     constructor(scene, x, y) {
-        super(scene, x, y, 'jumpWaypoint')
+        super(scene, x, y, 'Waypoint')
     }
     onEntered(sprite){
         sprite.IncVelocityY(-10);

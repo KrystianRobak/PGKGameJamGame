@@ -4,7 +4,7 @@ export default class JumpingState extends State {
     enter(scene, player) {
         this.player = player;
         player.anims.stop()
-        //player.anims.play("jumping")
+        player.anims.play("jumping")
         console.log(player.body.velocity)
         this.hitHook = false;
     }
@@ -21,7 +21,7 @@ export default class JumpingState extends State {
         }
         if(player.body.velocity.y >= 0){
             player.setVelocityY(0);
-            //player.stateMachine.transition('falling')
+            player.stateMachine.transition('falling')
         }
         if (player.body.velocity.x < 0)
             player.DecVelocityX(0.03);

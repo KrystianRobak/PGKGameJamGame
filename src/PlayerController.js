@@ -1,5 +1,4 @@
 import PlayerSprite from "./sprites/PlayerSprite";
-import AssetsKeys from './helpers/AssetsKeys';
 
 export default class PlayerController {
     constructor(scene) {
@@ -28,7 +27,7 @@ export default class PlayerController {
             parts: [
                 playerBody, this.sensors.bottom, this.sensors.left, this.sensors.right
             ],
-            friction: 0.01
+            friction: 0.001
         });
 
         this.playerSprite
@@ -47,6 +46,8 @@ export default class PlayerController {
                 const bodyB = event.pairs[i].bodyB;
 
                 if(bodyA.label === 'bottom' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'bottom') {
+                    if(this.playerSprite.stateMachine.step == 'hook')
+                        continue;
                     if(this.blocked.right || this.blocked.left)
                         this.playerSprite.stateMachine.transition('sliding')
                     else
@@ -60,7 +61,6 @@ export default class PlayerController {
             {
                 const bodyA = event.pairs[i].bodyA;
                 const bodyB = event.pairs[i].bodyB;
-
                 if(bodyA.label === 'right' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'right') {
                     if(this.playerSprite.stateMachine.state != 'hook'){
                         this.blocked.right = true;
@@ -71,13 +71,19 @@ export default class PlayerController {
                     if(this.playerSprite.stateMachine.state != 'hook'){
                         this.blocked.left = true;
                         this.playerSprite.stateMachine.transition('sliding')
-
                     }
                 }
             }
         }, this);
 
-        // ...
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: this.playerSprite,
+            objectB: this.scene.dangerous,
+            callback: () => {
+                this.playerSprite.setPosition(0, 400);
+            },
+            context: this
+        });
 
         this.scene.matter.world.on('collisionend', function (event) {
             for (let i = 0; i < event.pairs.length; i++) {
@@ -88,18 +94,12 @@ export default class PlayerController {
                     if (this.blocked.left || this.blocked.right) {
                         this.playerSprite.stateMachine.transition('sliding');
                     }
-                    else 
-                        this.playerSprite.stateMachine.transition('falling')
                 }
 
                 if (bodyA.label === 'right' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'right') {
-                        console.log("siema")
                         this.blocked.right = false;
-                        this.playerSprite.stateMachine.transition('falling');
                 } else if (bodyA.label === 'left' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'left') {
-                        console.log("siema")
                         this.blocked.left = false;
-                        this.playerSprite.stateMachine.transition('falling');
                 }
             }
         }, this);
