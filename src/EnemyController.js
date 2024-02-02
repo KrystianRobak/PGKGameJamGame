@@ -1,6 +1,7 @@
 import PlayerSprite from "./sprites/PlayerSprite";
 import HookWaypoint from "./waypoints/hookWaypoint";
 import JumpWaypoint from './waypoints/jumpWaypoint';
+import ReleaseHookWaypoint from "./waypoints/releaseHookWaypoint";
 
 export default class EnemyController {
     constructor(scene, amount) {
@@ -8,8 +9,8 @@ export default class EnemyController {
         this.enemiesAmount = amount;
 
         this.waypoints = [
-            new JumpWaypoint(this.scene, 500, 650),
-            new HookWaypoint(this.scene, 800, 650, 200, 200),
+            new HookWaypoint(this.scene, 200, 650, 400, 400),
+            new ReleaseHookWaypoint(this.scene, 400, 650),
             new JumpWaypoint(this.scene, 800, 400),
         ]
 
