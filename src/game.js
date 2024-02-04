@@ -15,7 +15,7 @@ export default new Phaser.Game({
     physics: {
         default: 'matter',
         matter: {
-            framerate: 30,
+            framerate: 60,
             debug: {
                 showBounds: false,
                 boundsColor: 0xffffff,

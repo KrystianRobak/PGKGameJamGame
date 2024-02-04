@@ -1,0 +1,154 @@
+{ "compressionlevel":-1,
+ "height":20,
+ "infinite":true,
+ "layers":[
+        {
+         "chunks":[
+                {
+                 "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 146, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 146, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 146, 146, 146, 146, 146, 146,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146],
+                 "height":16,
+                 "width":16,
+                 "x":0,
+                 "y":0
+                }],
+         "height":16,
+         "id":1,
+         "name":"Platforms",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":16,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":2,
+         "name":"PlatformsBodies",
+         "objects":[
+                {
+                 "height":810,
+                 "id":3,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":540,
+                 "x":0,
+                 "y":630
+                }, 
+                {
+                 "height":90,
+                 "id":7,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":900,
+                 "x":540,
+                 "y":1350
+                }, 
+                {
+                 "height":90,
+                 "id":8,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":540,
+                 "x":900,
+                 "y":990
+                }, 
+                {
+                 "height":630,
+                 "id":11,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":90,
+                 "x":900,
+                 "y":90
+                }, 
+                {
+                 "height":90,
+                 "id":12,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"label",
+                         "type":"string",
+                         "value":"platform"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":450,
+                 "x":450,
+                 "y":90
+                }],
+         "opacity":1,
+         "properties":[
+                {
+                 "name":"label",
+                 "type":"string",
+                 "value":"platform"
+                }],
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"RecordingPoints",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":4,
+ "nextobjectid":13,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.10.2",
+ "tileheight":90,
+ "tilesets":[
+        {
+         "columns":24,
+         "firstgid":1,
+         "image":"..\/..\/assets\/images\/levelSprites.png",
+         "imageheight":2160,
+         "imagewidth":2160,
+         "margin":0,
+         "name":"levelSprites",
+         "spacing":0,
+         "tilecount":576,
+         "tileheight":90,
+         "tilewidth":90
+        }],
+ "tilewidth":90,
+ "type":"map",
+ "version":"1.10",
+ "width":30
+}

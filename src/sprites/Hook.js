@@ -14,11 +14,12 @@ export default class Hook{
         this.shootingHook = false;
         this.scene = scene;
         this.player = player;
-
+        this.hookPos = {}
     }
 
     CreateHookBinds() {
         this.scene.input.on('pointerdown', (pointer) => {
+            this.hookPos = [pointer.worldX, pointer.worldY];
             this.ShootHook(pointer);
         });
  
@@ -37,6 +38,7 @@ export default class Hook{
             const playerY = this.player.y;
 
             const shootLaserRecursive = (index) => {
+                this.hitHook = true;
                 if (index < 15 && this.shootingHook) {
                     this.rayCast = this.shootLaser(playerX, playerY, pointerX, pointerY, index);
                     if (index === 0) {
@@ -50,7 +52,8 @@ export default class Hook{
                         if (!this.player.shootingHook) {
                             this.shootingHook = false;
                             this.rayCast.setStatic(true);
-                            this.player.stateMachine.transition('hook');
+                            if(!(this.player.label == 'enemy'))
+                                this.player.stateMachine.transition('hook');
                         }
                     });
 
@@ -68,8 +71,10 @@ export default class Hook{
     }
 
     DeleteHook() {
+        this.hitHook = false;
         this.shootingHook = false;
-        this.player.stateMachine.transition('falling')
+        if(!(this.player.label == 'enemy'))
+            this.player.stateMachine.transition('falling')
         this.rayCastChain.forEach(elem => {
             elem.destroy();
         });

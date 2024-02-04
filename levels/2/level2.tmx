@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="90" tileheight="90" infinite="1" nextlayerid="4" nextobjectid="13">
+ <editorsettings>
+  <export target="level2.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="levelSprites" tilewidth="90" tileheight="90" tilecount="576" columns="24">
+  <image source="../../assets/images/levelSprites.png" width="2160" height="2160"/>
+ </tileset>
+ <layer id="1" name="Platforms" width="30" height="20">
+  <data encoding="csv">
+   <chunk x="0" y="0" width="16" height="16">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,146,146,146,146,146,146,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,146,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,146,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,146,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,146,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,146,0,0,0,0,0,
+146,146,146,146,146,146,0,0,0,0,146,0,0,0,0,0,
+146,146,146,146,146,146,0,0,0,0,0,0,0,0,0,0,
+146,146,146,146,146,146,0,0,0,0,0,0,0,0,0,0,
+146,146,146,146,146,146,0,0,0,0,0,0,0,0,0,0,
+146,146,146,146,146,146,0,0,0,0,146,146,146,146,146,146,
+146,146,146,146,146,146,0,0,0,0,0,0,0,0,0,0,
+146,146,146,146,146,146,0,0,0,0,0,0,0,0,0,0,
+146,146,146,146,146,146,0,0,0,0,0,0,0,0,0,0,
+146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146
+</chunk>
+  </data>
+ </layer>
+ <objectgroup id="2" name="PlatformsBodies">
+  <properties>
+   <property name="label" value="platform"/>
+  </properties>
+  <object id="3" x="0" y="630" width="540" height="810"/>
+  <object id="7" x="540" y="1350" width="900" height="90"/>
+  <object id="8" x="900" y="990" width="540" height="90"/>
+  <object id="11" x="900" y="90" width="90" height="630"/>
+  <object id="12" x="450" y="90" width="450" height="90">
+   <properties>
+    <property name="label" value="platform"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="RecordingPoints"/>
+</map>

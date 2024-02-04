@@ -1,100 +1,89 @@
-import PlayerSprite from "./sprites/PlayerSprite";
-import HookWaypoint from "./waypoints/hookWaypoint";
-import JumpWaypoint from './waypoints/jumpWaypoint';
-import ReleaseHookWaypoint from "./waypoints/releaseHookWaypoint";
+import EnemySprite from "./sprites/EnemySprite";
+
+import enemyLevel1Recording1 from '../levels/1/level1enemy1.json'
+import enemyLevel1Recording2 from '../levels/1/level1enemy2.json'
+
+const Sides = {
+    right: 1,
+    left: -1
+}
+
+const Level1Recordings = [
+    enemyLevel1Recording1,
+    enemyLevel1Recording2
+]
 
 export default class EnemyController {
     constructor(scene, amount) {
         this.scene = scene;
         this.enemiesAmount = amount;
+        this.recordings = Level1Recordings;
+        console.log(this.recordings)
 
-        this.waypoints = [
-            new HookWaypoint(this.scene, 200, 650, 400, 400),
-            new ReleaseHookWaypoint(this.scene, 400, 650),
-            new JumpWaypoint(this.scene, 800, 400),
-        ]
-
-        this.enemiesProgress = [];
-
-        this.enemiesReactionSpeed = [];
-        this.enemiesMovementSpeed = [];
+        this.enemies = []
 
         this.populateEnemies();
-        this.createColliders();
     }
 
     populateEnemies() {
         for(var i = 0;i < this.enemiesAmount; i++) {
-            var enemySprite = new PlayerSprite(this.scene,0,this.scene.game.scale.gameSize.height / 2, this, 'enemy');
+            var enemySprite = new EnemySprite(
+                this.scene,
+                0,
+                this.scene.game.scale.gameSize.height / 2,
+                this,
+                Level1Recordings[i],
+                'enemy');
+
             enemySprite.label = 'enemy';
             enemySprite.setFixedRotation();
+            enemySprite.setIgnoreGravity(true);
+
             this.scene.add.existing(enemySprite);
-            this.enemiesProgress.push([enemySprite, this.waypoints[0]]);
+            this.enemies.push(enemySprite);
         }
     }
 
-    createColliders() {
-        this.scene.matter.world.on('collisionstart', function (event) {
-            for (let i = 0; i < event.pairs.length; i++)
-            {
-                const bodyA = event.pairs[i].bodyA;
-                const bodyB = event.pairs[i].bodyB;
-                if ((bodyA.label === 'enemy' && bodyB.label === 'traps') || (bodyA.label === 'traps' && bodyB.label === 'enemy')) {
-                    const enemyIndex = this.enemiesProgress.findIndex((enemyProgress) => enemyProgress[0].body === bodyA || enemyProgress[0].body === bodyB);
-                    if (enemyIndex !== -1) {
-                        const [enemySprite] = this.enemiesProgress.splice(enemyIndex, 1);
-                        enemySprite[0].destroy();
-                    }
+    UpdateEnemies(number) {
+        for(var i = 0;i < this.enemiesAmount; i++) {
+            if(number == 10) {
+                if(this.enemies[i].recordingNum < this.enemies[i].recording.length){
+                    this.enemies[i].prevNums = this.enemies[i].currNums;
+                    this.enemies[i].currNums = this.enemies[i].recording[this.enemies[i].recordingNum]
                 }
-                if(bodyA.label === 'enemy' && bodyB.label === 'Waypoint' || bodyA.label === 'Waypoint' && bodyB.label === 'enemy') {
-                    if(bodyA.label === 'enemy') {
-                        bodyB.gameObject.onEntered(bodyB.gameObject);
-                    }
-                    if(bodyB.label === 'enemy') {
-                        bodyA.gameObject.onEntered(bodyB.gameObject);
-                    }
-                    const waypointBody = bodyA.label === 'Waypoint' ? bodyA : bodyB;
-                    console.log(waypointBody)
-                    const waypointIndex = this.waypoints.indexOf(waypointBody.gameObject);
-                    if (waypointIndex !== -1) {
-                        this.waypoints.splice(waypointIndex, 1);
-                        waypointBody.destroy();
-                    }
-                }
+                this.enemies[i].setPosition(parseFloat(this.enemies[i].prevNums[0]),parseFloat(this.enemies[i].prevNums[1]))
+                this.enemies[i].recordingNum += 1;
+            } else {
+                var steps = 10;
+
+                var interpolationFactor = number / steps;
+                var lerpedX = parseFloat(this.enemies[i].prevNums[0]) + (parseFloat(this.enemies[i].currNums[0]) - parseFloat(this.enemies[i].prevNums[0])) * interpolationFactor;
+                var lerpedY = parseFloat(this.enemies[i].prevNums[1]) + (parseFloat(this.enemies[i].currNums[1]) - parseFloat(this.enemies[i].prevNums[1])) * interpolationFactor;
+                lerpedX.toFixed(2);
+                lerpedY.toFixed(2);
+                this.enemies[i].setPosition(lerpedX, lerpedY);
             }
-        }, this);
-    }
-
-    UpdateEnemies() {
-        for (let i = 0; i < this.enemiesProgress.length; i++) {
-            var enemyProgress = this.enemiesProgress[i];   
-            var enemySprite = enemyProgress[0];
-            enemySprite.stateMachine.step();
-            var currentWaypoint = enemyProgress[1];
-
-            // Calculate the direction towards the current waypoint
-            const directionX = currentWaypoint.x - enemySprite.x;
-            const directionY = currentWaypoint.y - enemySprite.y;
-            const distance = Math.sqrt(directionX * directionX + directionY * directionY);
-
-            // Normalize the direction
-            const normalizedDirectionX = directionX / distance;
-
-            // Move the enemy towards the current waypoint
-            const speed = 0.2; // Adjust the speed as needed
-            enemySprite.IncVelocityX(speed * normalizedDirectionX);
-
-            // Check if the enemy has reached the current waypoint
-            const distanceToWaypoint = Phaser.Math.Distance.Between(
-                enemySprite.x, enemySprite.y,
-                currentWaypoint.x, currentWaypoint.y
-            );
-
-            if (distanceToWaypoint < 120) { // Adjust the threshold as needed
-                // Move to the next waypoint
-                const nextWaypointIndex = (this.waypoints.indexOf(currentWaypoint) + 1) % this.waypoints.length;
-                enemyProgress[1] = this.waypoints[nextWaypointIndex];
-                
+            if (!this.enemies[i].hooked && this.enemies[i].currNums[5]) {
+                var pointerEne = {
+                    worldX: this.enemies[i].currNums[6][0],
+                    worldY: this.enemies[i].currNums[6][1]
+                };
+                this.enemies[i].hook.ShootHook(pointerEne);
+                this.enemies[i].hooked = true;
+            } else if (this.enemies[i].hooked && !this.enemies[i].currNums[5]) {
+                this.enemies[i].hook.DeleteHook();
+                this.enemies[i].hooked = false;
+            }
+            if(lerpedY < this.enemies[i].currNums[1]){
+                this.enemies[i].anims.play('jumping')
+            }
+            if(this.enemies[i].currNums[2]){
+                this.enemies[i].anims.play('run')
+                this.enemies[i].setFlipX(true);
+            }
+            if(this.enemies[i].currNums[3]){
+                this.enemies[i].anims.play('run')
+                this.enemies[i].setFlipX(false);
             }
         }
     }

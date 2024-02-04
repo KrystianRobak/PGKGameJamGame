@@ -1,9 +1,17 @@
 import PlayerSprite from "./sprites/PlayerSprite";
+import AssetsKeys from "./helpers/AssetsKeys";
 
 export default class PlayerController {
     constructor(scene) {
         this.scene = scene;
-        this.playerSprite = new PlayerSprite(this.scene,0,this.scene.game.scale.gameSize.height *0.2, this, 'player');
+
+        this.keys = {
+            keyA: this.scene.input.keyboard.addKey('A'),
+            keyW: this.scene.input.keyboard.addKey('W'),
+            keyD: this.scene.input.keyboard.addKey('D')
+        }
+
+        this.playerSprite = new PlayerSprite(this.scene,0,this.scene.game.scale.gameSize.height *0.2, this, this.keys, 'player');
 
         scene.add.existing(this.playerSprite);
 
@@ -19,8 +27,8 @@ export default class PlayerController {
 
         this.sensors = {
             bottom: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, this.playerSprite.height, sx, 10, { isSensor: true , label: 'bottom'}),
-            left: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx - this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height * 0.25, { isSensor: true, label: 'left' }),
-            right: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx + this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height * 0.25, { isSensor: true, label: 'right' })
+            left: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx - this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height*0.95, { isSensor: true, label: 'left' }),
+            right: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx + this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height*0.95, { isSensor: true, label: 'right' })
         };
 
         const compoundBody = Phaser.Physics.Matter.Matter.Body.create({
@@ -34,7 +42,7 @@ export default class PlayerController {
             .setExistingBody(compoundBody)
             .setFixedRotation();
 
-
+        this.playerSprite.setPosition(230,1900)
         this.createColliders();
     }
 
@@ -80,6 +88,7 @@ export default class PlayerController {
             objectA: this.playerSprite,
             objectB: this.scene.dangerous,
             callback: () => {
+                console.log('die')
                 this.playerSprite.setPosition(0, 400);
             },
             context: this
@@ -104,10 +113,42 @@ export default class PlayerController {
             }
         }, this);
 
+        this.scene.matter.world.on('collisionstart', function (event) {
+            for (let i = 0; i < event.pairs.length; i++)
+            {
+                const bodyA = event.pairs[i].bodyA;
+                const bodyB = event.pairs[i].bodyB;
+
+                if(bodyA.label === 'starting' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'starting') {
+                    this.scene.startRecording();
+                }
+                if(bodyA.label === 'ending' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'ending') {
+                    this.scene.stopRecording();
+                    this.scene.recorder.dumpRecordings();
+                    this.scene.clearLevel();
+                    this.scene.swapLevel(AssetsKeys.Level2);
+                }
+                if(bodyA.label === 'still' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'still') {
+                    this.scene.stopRecording();
+                    this.scene.startRecording();
+                    
+                    if (bodyA.label === 'still') {
+                        console.log(bodyA)
+                        this.scene.matter.world.remove(bodyA);
+                    } else {
+                        console.log(bodyB)
+                        this.scene.matter.world.remove(bodyB);
+                    }
+                }
+            }
+        }, this);
 
         this.playerSprite.hook.CreateHookBinds();
     }
 
+    Update() {
+        
+    }
 }
 
 

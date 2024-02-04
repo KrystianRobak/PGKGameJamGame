@@ -8,9 +8,10 @@ export default class SlidingState extends State {
         player.anims.play("sliding")
     }
 
-    execute(scene, player) {
+    execute(keys, player) {
+        super.execute(keys, player);
         if(player.label != 'enemy') {
-            if (scene.cursors.up.isDown && player.controller.blocked.left)
+            if (keys.keyW.isDown && player.controller.blocked.left)
             {
                 if(player.jumpFlip) {
                     player.setVelocityY(-10);
@@ -19,7 +20,7 @@ export default class SlidingState extends State {
                     player.stateMachine.transition('jump')
                 }
             }
-            else if (scene.cursors.up.isDown && player.controller.blocked.right)
+            else if (keys.keyW.isDown && player.controller.blocked.right)
             {   
                 if(player.jumpFlip) {
                     player.setVelocityY(-10);
@@ -28,7 +29,7 @@ export default class SlidingState extends State {
                     player.stateMachine.transition('jump')
                 }
             }
-            if(!scene.cursors.up.isDown) {
+            if(!keys.keyW.isDown) {
                 player.jumpFlip = true;
             }
         }
