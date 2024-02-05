@@ -23,12 +23,12 @@ export default class PlayerController {
         const sx = this.playerSprite.width / 2;
         const sy = this.playerSprite.height / 2;
 
-        const playerBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, sy, this.playerSprite.width, this.playerSprite.height);
+        const playerBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, sy, this.playerSprite.width/1.8, this.playerSprite.height-20);
 
         this.sensors = {
             bottom: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, this.playerSprite.height, sx, 10, { isSensor: true , label: 'bottom'}),
-            left: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx - this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height*0.95, { isSensor: true, label: 'left' }),
-            right: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx + this.playerSprite.width * 0.50, sy, 5, this.playerSprite.height*0.95, { isSensor: true, label: 'right' })
+            left: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx - this.playerSprite.width * 0.30, sy, 5, this.playerSprite.height*0.80, { isSensor: true, label: 'left' }),
+            right: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx + this.playerSprite.width * 0.30, sy, 5, this.playerSprite.height*0.80, { isSensor: true, label: 'right' })
         };
 
         const compoundBody = Phaser.Physics.Matter.Matter.Body.create({
@@ -42,7 +42,7 @@ export default class PlayerController {
             .setExistingBody(compoundBody)
             .setFixedRotation();
 
-        this.playerSprite.setPosition(230,1900)
+        this.playerSprite.setPosition(230,1900).setScale(0.8).setFixedRotation();;
         this.createColliders();
     }
 
@@ -81,18 +81,23 @@ export default class PlayerController {
                         this.playerSprite.stateMachine.transition('sliding')
                     }
                 }
+                else if(bodyA.label === 'left' && bodyB.label === 'traps' || bodyA.label === 'traps' && bodyB.label === 'left') {
+                    if(this.playerSprite.stateMachine.state != 'hook'){
+                        this.playerSprite.setPosition(200, 3400);
+                    }
+                }
+                else if(bodyA.label === 'right' && bodyB.label === 'traps' || bodyA.label === 'traps' && bodyB.label === 'right') {
+                    if(this.playerSprite.stateMachine.state != 'hook'){
+                        this.playerSprite.setPosition(200, 3400);
+                    }
+                }
+                else if(bodyA.label === 'bottom' && bodyB.label === 'traps' || bodyA.label === 'traps' && bodyB.label === 'bottom') {
+                    if(this.playerSprite.stateMachine.state != 'hook'){
+                        this.playerSprite.setPosition(200, 3400);
+                    }
+                }
             }
         }, this);
-
-        this.scene.matterCollision.addOnCollideStart({
-            objectA: this.playerSprite,
-            objectB: this.scene.dangerous,
-            callback: () => {
-                console.log('die')
-                this.playerSprite.setPosition(0, 400);
-            },
-            context: this
-        });
 
         this.scene.matter.world.on('collisionend', function (event) {
             for (let i = 0; i < event.pairs.length; i++) {
@@ -118,6 +123,12 @@ export default class PlayerController {
             {
                 const bodyA = event.pairs[i].bodyA;
                 const bodyB = event.pairs[i].bodyB;
+
+                if(bodyA.label === 'right' && bodyB.label === 'End' || bodyA.label === 'End' && bodyB.label === 'right') {
+                    this.scene.clearLevel();
+                    this.playerSprite.setPosition(200, 3400)
+                    this.scene.swapLevel(this.scene.levels.shift());
+                }
 
                 if(bodyA.label === 'starting' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'starting') {
                     this.scene.startRecording();

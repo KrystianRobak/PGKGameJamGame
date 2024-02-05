@@ -4,8 +4,7 @@ export default class SlidingState extends State {
     enter(scene, player, side) {
         this.player = player;
         this.side = side;
-        player.anims.stop()
-        player.anims.play("sliding")
+        player.anims.play("sliding", true)
     }
 
     execute(keys, player) {

@@ -16,22 +16,22 @@ export default new Phaser.Game({
         default: 'matter',
         matter: {
             framerate: 60,
-            debug: {
-                showBounds: false,
-                boundsColor: 0xffffff,
-                showBody: true,
-                showStaticBody: true,
-                showInternalEdges: true,
-                showSensors: true,
-                sensorFillColor: 0x0d177b,
-                sensorLineColor: 0x1327e4,
+            // debug: {
+            //     showBounds: false,
+            //     boundsColor: 0xffffff,
+            //     showBody: true,
+            //     showStaticBody: true,
+            //     showInternalEdges: true,
+            //     showSensors: true,
+            //     sensorFillColor: 0x0d177b,
+            //     sensorLineColor: 0x1327e4,
     
-                showPositions: true,
-                positionSize: 4,
-                positionColor: 0xe042da,
-                showCollisions: true,
-                collisionColor: 0xf5950c,
-            }
+            //     showPositions: true,
+            //     positionSize: 4,
+            //     positionColor: 0xe042da,
+            //     showCollisions: true,
+            //     collisionColor: 0xf5950c,
+            // }
         }
     },
     scene: [MainMenuScene,GameScene,LevelSelectionScene,PauseScene],

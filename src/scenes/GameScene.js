@@ -1,61 +1,59 @@
 import Phaser from '../../lib/phaser';
 import Recorder from '../helpers/Recorder';
 import AssetsKeys from '../helpers/AssetsKeys';
+
 import playerSpritesheet from '../../assets/images/PlayerSpritesheet.png';
 import playerSpritesheetjson from '../../assets/images/PlayerSpritesheet.json';
+import hook from '../../assets/images/hook.png';
+
 import PlayerController from '../PlayerController';
 
-// import backgroundMiddleLevel1 from '../../levels/1/assets/background_Level1-1.png';
-// import backgroundFarLevel1 from '../../levels/1/assets/background_Level1-2.png';
-// import backgroundCloseLevel1 from '../../levels/1/assets/background_Level1-3.png';
-// import backgroundGradientLevel1 from '../../levels/1/assets/background_Level1-4.png';
-// import mapLevel1 from '../../levels/1/level1.json'
+import backgroundMiddleLevel1 from '../../assets/images/level12/background_Level1-1.png';
+import backgroundFarLevel1 from '../../assets/images/level12/background_Level1-2.png';
+import backgroundCloseLevel1 from '../../assets/images/level12/background_Level1-3.png';
+import backgroundGradientLevel1 from '../../assets/images/level12/background_Level1-4.png';
 
-// import backgroundMiddleLevel2 from '../../levels/2/assets/background_Level2-1.png';
-// import backgroundFarLevel2 from '../../levels/2/assets/background_Level2-2.png';
-// import backgroundCloseLevel2 from '../../levels/2/assets/background_Level2-3.png';
-// import backgroundGradientLevel2 from '../../levels/2/assets/background_Level2-4.png';
-// import mapLevel2 from '../../levels/2/level2.json';
+// Level 2
+import backgroundMiddleLevel2 from '../../assets/images/level34/background_Level1-1.png';
+import backgroundFarLevel2 from '../../assets/images/level34/background_Level1-2.png';
+import backgroundCloseLevel2 from '../../assets/images/level34/background_Level1-3.png';
+import backgroundGradientLevel2 from '../../assets/images/level34/background_Level1-4.png';
 
-// import backgroundMiddleLevel3 from '../../levels/3/assets/background_Level3-1.png';
-// import backgroundFarLevel3 from '../../levels/3/assets/background_Level3-2.png';
-// import backgroundCloseLevel3 from '../../levels/3/assets/background_Level3-3.png';
-// import backgroundGradientLevel3 from '../../levels/3/assets/background_Level3-4.png';
-// import mapLevel3 from '../../levels/3/level3.json';
+// Level 2
+import backgroundMiddleLevel3 from '../../assets/images/level56/background_Level1-1.png';
+import backgroundFarLevel3 from '../../assets/images/level56/background_Level1-2.png';
+import backgroundCloseLevel3 from '../../assets/images/level56/background_Level1-3.png';
+import backgroundGradientLevel3 from '../../assets/images/level56/background_Level1-4.png';
 
-// import backgroundMiddleLevel4 from '../../levels/4/assets/background_Level4-1.png';
-// import backgroundFarLevel4 from '../../levels/4/assets/background_Level4-2.png';
-// import backgroundCloseLevel4 from '../../levels/4/assets/background_Level4-3.png';
-// import backgroundGradientLevel4 from '../../levels/4/assets/background_Level4-4.png';
-// import mapLevel4 from '../../levels/4/level4.json';
+// Level 3
+import backgroundMiddleLevel4 from '../../assets/images/level7/background_Level1-1.png';
+import backgroundFarLevel4 from '../../assets/images/level7/background_Level1-2.png';
+import backgroundCloseLevel4 from '../../assets/images/level7/background_Level1-3.png';
+import backgroundGradientLevel4 from '../../assets/images/level7/background_Level1-4.png';
 
-// import backgroundMiddleLevel5 from '../../levels/5/assets/background_Level5-1.png';
-// import backgroundFarLevel5 from '../../levels/5/assets/background_Level5-2.png';
-// import backgroundCloseLevel5 from '../../levels/5/assets/background_Level5-3.png';
-// import backgroundGradientLevel5 from '../../levels/5/assets/background_Level5-4.png';
-// import mapLevel5 from '../../levels/5/level5.json';
-
-// import backgroundMiddleLevel6 from '../../levels/6/assets/background_Level6-1.png';
-// import backgroundFarLevel6 from '../../levels/6/assets/background_Level6-2.png';
-// import backgroundCloseLevel6 from '../../levels/6/assets/background_Level6-3.png';
-// import backgroundGradientLevel6 from '../../levels/6/assets/background_Level6-4.png';
-// import mapLevel6 from '../../levels/6/level6.json';
-
-// import backgroundMiddleLevel7 from '../../levels/7/assets/background_Level7-1.png';
-// import backgroundFarLevel7 from '../../levels/7/assets/background_Level7-2.png';
-// import backgroundCloseLevel7 from '../../levels/7/assets/background_Level7-3.png';
-// import backgroundGradientLevel7 from '../../levels/7/assets/background_Level7-4.png';
-// import mapLevel7 from '../../levels/7/level7.json';
+import mapLevel1 from '../../levels/1/level1.json';
+import mapLevel2 from '../../levels/2/level2.json';
+import mapLevel3 from '../../levels/3/level3.json';
+import mapLevel4 from '../../levels/4/level4.json';
 
 import EnemyController from '../EnemyController';
 
 import tiles from '../../assets/images/levelSprites.png';
 
+
+
 export default class GameScene extends Phaser.Scene {
     constructor() {
         super("game");
+        this.levels = [
+            AssetsKeys.Level2,
+            AssetsKeys.Level3,
+            AssetsKeys.Level4,
+        ]
+
         this.platforms = [] 
         this.dangerous = []
+        this.gamePoints = [];
         this.recordingPoints = [];
 
         this.background = null;
@@ -63,9 +61,6 @@ export default class GameScene extends Phaser.Scene {
         this.backgroundFar = null;
         this.backgroundClose = null;
 
-        this.map = null;
-
-        this.tileset = null;
         this.platformLayer = null;
         this.dangerousLayer = null;
 
@@ -78,17 +73,18 @@ export default class GameScene extends Phaser.Scene {
     preload() {
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
+
         progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect(240, 270, 320, 50);
+        progressBox.fillRect(480, 540, 640, 100); // Scaled to 1920x1080
 
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
         var loadingText = this.make.text({
             x: width / 2,
-            y: height / 2 - 50,
+            y: height / 2 - 100, // Adjusted for scaling
             text: 'Loading...',
             style: {
-                font: '20px monospace',
+                font: '40px monospace', // Adjusted for scaling
                 fill: '#ffffff'
             }
         });
@@ -96,10 +92,10 @@ export default class GameScene extends Phaser.Scene {
 
         var percentText = this.make.text({
             x: width / 2,
-            y: height / 2 - 5,
+            y: height / 2 + 45, // Adjusted for scaling
             text: '0%',
             style: {
-                font: '18px monospace',
+                font: '36px monospace', // Adjusted for scaling
                 fill: '#ffffff'
             }
         });
@@ -107,10 +103,10 @@ export default class GameScene extends Phaser.Scene {
 
         var assetText = this.make.text({
             x: width / 2,
-            y: height / 2 + 50,
+            y: height / 2 + 150, // Adjusted for scaling
             text: '',
             style: {
-                font: '18px monospace',
+                font: '36px monospace', // Adjusted for scaling
                 fill: '#ffffff'
             }
         });
@@ -120,14 +116,14 @@ export default class GameScene extends Phaser.Scene {
             console.log(value);
             progressBar.clear();
             progressBar.fillStyle(0xffffff, 1);
-            progressBar.fillRect(250, 280, 300 * value, 30);
+            progressBar.fillRect(520, 570, 600 * value, 60); // Adjusted for scaling
             percentText.setText(parseInt(value * 100) + '%');
+        });
+
+        this.load.on('fileprogress', function (file) {
             assetText.setText('Loading asset: ' + file.src);
         });
-                    
-        this.load.on('fileprogress', function (file) {
-            console.log(file.src);
-        });
+
         this.load.on('complete', function () {
             progressBar.destroy();
             progressBox.destroy();
@@ -137,27 +133,35 @@ export default class GameScene extends Phaser.Scene {
             console.log('complete');
         });
 
+        this.load.image(AssetsKeys.HOOK, hook);
+
         this.load.atlas(AssetsKeys.PLAYER, playerSpritesheet, playerSpritesheetjson);
         this.load.image(AssetsKeys.TILESET, tiles);
 
-        this.load.image(AssetsKeys.Level1.BACKGROUNDGRADIENT, backgroundGradient);
-        this.load.image(AssetsKeys.Level1.BACKGROUNDMIDDLE, backgroundMiddle);
-        this.load.image(AssetsKeys.Level1.BACKGROUNDFAR, backgroundFar);
-        this.load.image(AssetsKeys.Level1.BACKGROUNDCLOSE, backgroundClose);
+        this.load.image(AssetsKeys.Level1.BACKGROUNDGRADIENT, backgroundGradientLevel1);
+        this.load.image(AssetsKeys.Level1.BACKGROUNDMIDDLE, backgroundMiddleLevel1);
+        this.load.image(AssetsKeys.Level1.BACKGROUNDFAR, backgroundFarLevel1);
+        this.load.image(AssetsKeys.Level1.BACKGROUNDCLOSE, backgroundCloseLevel1);
 
-        for (let level = 1; level <= 7; level++) {
-            const backgroundMiddle = require(`../../levels/${level}/assets/background_Level${level}-1.png`).default;
-            const backgroundFar = require(`../../levels/${level}/assets/background_Level${level}-2.png`).default;
-            const backgroundClose = require(`../../levels/${level}/assets/background_Level${level}-3.png`).default;
-            const backgroundGradient = require(`../../levels/${level}/assets/background_Level${level}-4.png`).default;
-            const mapLevel = require(`../../levels/${level}/level${level}.json`).default;
-            
-            this.load.image(AssetsKeys[`Level${level}`].BACKGROUNDGRADIENT, backgroundGradient);
-            this.load.image(AssetsKeys[`Level${level}`].BACKGROUNDMIDDLE, backgroundMiddle);
-            this.load.image(AssetsKeys[`Level${level}`].BACKGROUNDFAR, backgroundFar);
-            this.load.image(AssetsKeys[`Level${level}`].BACKGROUNDCLOSE, backgroundClose);
-            this.load.tilemapTiledJSON(AssetsKeys.[`Level${level}`].TILEMAP, mapLevel)
-        }
+        this.load.image(AssetsKeys.Level2.BACKGROUNDGRADIENT, backgroundGradientLevel2);
+        this.load.image(AssetsKeys.Level2.BACKGROUNDMIDDLE, backgroundMiddleLevel2);
+        this.load.image(AssetsKeys.Level2.BACKGROUNDFAR, backgroundFarLevel2);
+        this.load.image(AssetsKeys.Level2.BACKGROUNDCLOSE, backgroundCloseLevel2);
+
+        this.load.image(AssetsKeys.Level3.BACKGROUNDGRADIENT, backgroundGradientLevel3);
+        this.load.image(AssetsKeys.Level3.BACKGROUNDMIDDLE, backgroundMiddleLevel3);
+        this.load.image(AssetsKeys.Level3.BACKGROUNDFAR, backgroundFarLevel3);
+        this.load.image(AssetsKeys.Level3.BACKGROUNDCLOSE, backgroundCloseLevel3);
+
+        this.load.image(AssetsKeys.Level3.BACKGROUNDGRADIENT, backgroundGradientLevel4);
+        this.load.image(AssetsKeys.Level3.BACKGROUNDMIDDLE, backgroundMiddleLevel4);
+        this.load.image(AssetsKeys.Level3.BACKGROUNDFAR, backgroundFarLevel4);
+        this.load.image(AssetsKeys.Level3.BACKGROUNDCLOSE, backgroundCloseLevel4);
+
+        this.load.tilemapTiledJSON(AssetsKeys.Level1.TILEMAP, mapLevel1);
+        this.load.tilemapTiledJSON(AssetsKeys.Level2.TILEMAP, mapLevel2);
+        this.load.tilemapTiledJSON(AssetsKeys.Level3.TILEMAP, mapLevel3);
+        this.load.tilemapTiledJSON(AssetsKeys.Level4.TILEMAP, mapLevel4);
     }
 
     init() {
@@ -166,17 +170,17 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         this.recordingFrame = 0;
-        this.matter.world.setBounds(0, 0, this.game.scale.gameSize.width*3, this.game.scale.gameSize.height*3);
+        this.matter.world.setBounds(0, 0, 6300, 3600);
         this.lights.enable().setAmbientColor(0x111111);
-
         
         this.num = 0;
-        
-        this.playerController = new PlayerController(this);
-        //this.enemyController = new EnemyController(this, 2);
         this.swapLevel(AssetsKeys.Level1);
+        this.playerController = new PlayerController(this);
+        this.playerController.playerSprite.setPosition(200, 3400)
+        //this.enemyController = new EnemyController(this, 2);
+        
         this.cameras.main.startFollow(this.playerController.playerSprite);
-        //this.player.createAnimations();
+        this.playerController.playerSprite.createAnimations();
 
         this.recorder = new Recorder();
     }
@@ -230,62 +234,78 @@ export default class GameScene extends Phaser.Scene {
         this.dangerous.forEach(elem => {
             this.matter.world.remove(elem);
         });
+        this.gamePoints.forEach(elem => {
+            this.matter.world.remove(elem);
+        });
         this.recordingPoints.forEach(elem => {
             this.matter.world.remove(elem);
         });
 
         this.platforms = [] 
         this.dangerous = []
+        this.gamePoints = [];
         this.recordingPoints = [];
 
-        this.background = null;
-        this.backgroundMiddle = null;
-        this.backgroundFar = null;
-        this.backgroundClose = null;
+        this.background.destroy()
+        this.backgroundMiddle.destroy()
+        this.backgroundFar.destroy()
+        this.backgroundClose.destroy()
 
-        this.map = null;
 
         this.platformLayer.destroy();
-        //this.dangerousLayer.destroy();
+        this.dangerousLayer.destroy();
 
-        this.platformLayer = null;
-        this.dangerousLayer = null;
+        this.platformLayer.destroy()
+        this.dangerousLayer.destroy()
 
-        this.platformBodies = null;
-
-        this.recordingBodies = null;
     }
 
     swapLevel(keys) {
-        this.playerController.playerSprite.setPosition(230, 800)
-
         this.background = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDGRADIENT).setOrigin(0)
         this.backgroundMiddle = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDMIDDLE).setOrigin(0)
         this.backgroundFar = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDFAR).setOrigin(0)
         this.backgroundClose = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDCLOSE).setOrigin(0)
 
-        this.background.setPipeline('Light2D');
-        this.backgroundMiddle.setPipeline('Light2D');
-        this.backgroundFar.setPipeline('Light2D');
-        this.background.setPipeline('Light2D');
+        this.background.setScrollFactor(0);
+        this.backgroundMiddle.setScrollFactor(0);
+        this.backgroundFar.setScrollFactor(0);
+        this.backgroundClose.setScrollFactor(0);
 
-        this.map = this.make.tilemap({key: keys.TILEMAP, tileWidth: 60, tileHeight: 60});
+        this.map = this.make.tilemap({key: keys.TILEMAP, tileWidth: 180, tileHeight: 180});
         this.tileset = this.map.addTilesetImage("levelSprites", AssetsKeys.TILESET);
         this.platformLayer = this.map.createLayer("Platforms", this.tileset, 0, 0);
         this.dangerousLayer = this.map.createLayer("Dangerous", this.tileset, 0, 0);
 
-        var platformBodies = this.map.getObjectLayer("PlatformsBodies");
+        var platformBodies = this.map.getObjectLayer("PlatformBodies");
+
         platformBodies.objects.forEach(obj => {
             const label = platformBodies.properties[0].value;
             var platform = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true});
             this.platforms.push(platform);
         });
 
-        var recordingBodies = this.map.getObjectLayer("RecordingPoints");
-        recordingBodies.objects.forEach(obj => {
-            const label = obj.properties[0].value;
-            var recordingPoint = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true,isSensor: true});
-            this.recordingPoints.push(recordingPoint);
+        var dangerousBodies = this.map.getObjectLayer("DangerousBodies");
+        dangerousBodies.objects.forEach(obj => {
+            const label = dangerousBodies.properties[0].value;
+            var platform = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true});
+            this.dangerous.push(platform);
         });
+
+        var gamePoints = this.map.getObjectLayer("GamePoints");
+        gamePoints.objects.forEach(obj => {
+            const label = obj.properties[0].value;
+            var platform = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true, isSensor: true});
+            this.gamePoints.push(platform);
+        });
+
+        // var recordingBodies = this.map.getObjectLayer("RecordingPoints");
+        // recordingBodies.objects.forEach(obj => {
+        //     const label = obj.properties[0].value;
+        //     var recordingPoint = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true,isSensor: true});
+        //     this.recordingPoints.push(recordingPoint);
+        // });
+
+        if(this.playerController)
+             this.children.bringToTop(this.playerController.playerSprite);
     }
 }

@@ -1,5 +1,6 @@
 
 export default {
+    HOOK: 'hook',
     PLAYER: 'player',
     TILESET:'tileSet',
     Player: {
@@ -36,30 +37,6 @@ export default {
         BACKGROUNDGRADIENT:'backgroundGradient4',
         
         TILEMAP:'tileMap4',
-    },
-    Level5: {
-        BACKGROUNDCLOSE:'backgroundClose5',
-        BACKGROUNDMIDDLE:'backgroundMiddle5',
-        BACKGROUNDFAR:'backgroundFar5',
-        BACKGROUNDGRADIENT:'backgroundGradient5',
-        
-        TILEMAP:'tileMap5',
-    },
-    Level6: {
-        BACKGROUNDCLOSE:'backgroundClose6',
-        BACKGROUNDMIDDLE:'backgroundMiddle6',
-        BACKGROUNDFAR:'backgroundFar6',
-        BACKGROUNDGRADIENT:'backgroundGradient6',
-        
-        TILEMAP:'tileMap6',
-    },
-    Level7: {
-        BACKGROUNDCLOSE:'backgroundClose7',
-        BACKGROUNDMIDDLE:'backgroundMiddle7',
-        BACKGROUNDFAR:'backgroundFar7',
-        BACKGROUNDGRADIENT:'backgroundGradient7',
-        
-        TILEMAP:'tileMap7',
     }
 
 }

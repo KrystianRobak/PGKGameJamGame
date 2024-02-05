@@ -2,8 +2,7 @@ import State from "./state";
 
 export default class FallingState extends State {
     enter(keys, player) {
-        player.anims.stop()
-       // player.anims.play('falling', true);
+        
     }
 
     execute(keys, player) {

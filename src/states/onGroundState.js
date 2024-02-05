@@ -2,11 +2,19 @@ import State from "./state";
 
 export default class IdleRunningState extends State {
     enter(keys, player) {
-        player.anims.stop();
+        player.anims.play('idle', true);
     }
     
     execute(keys, player) {
-        super.execute(keys, player);
+            if (keys.keyA.isDown) {
+                player.IncVelocityX(-1);
+                player.setFlipX(true);
+                player.anims.play('run', true)
+            } else if (keys.keyD.isDown) {
+                player.IncVelocityX(1);
+                player.setFlipX(false);
+                player.anims.play('run', true)
+            }
             if (keys.keyW.isDown) {
                 if(player.jumpFlip) {
                 player.setVelocityY(-10);
@@ -21,7 +29,7 @@ export default class IdleRunningState extends State {
                 player.DecVelocityX(0.05);
             else
                 player.DecVelocityX(-0.05);
-            player.anims.play('idle', true);
+            //player.anims.play('idle', true);
    }  
 
     

@@ -4,7 +4,7 @@ export default class JumpingState extends State {
     enter(keys, player) {
         this.player = player;
         player.anims.stop()
-        player.anims.play("jumping")
+        player.anims.play("jumping", true)
 
         this.hitHook = false;
     }

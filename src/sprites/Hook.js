@@ -96,7 +96,7 @@ export default class Hook{
         var startY_ = startY+ (i*30 + configs.distance/5)  * Math.sin(angle);
     
         // Create a laser beam as a matter sprite
-        var laser = this.scene.matter.add.image(startX_, startY_, AssetsKeys.IMAGES,'rope', {label:"laser"}).setSensor(true);
+        var laser = this.scene.matter.add.image(startX_, startY_, AssetsKeys.HOOK,'rope', {label:"laser"}).setSensor(true);
         // Set the rotation of the laser to match the angle
         laser.setRotation(angle);
     

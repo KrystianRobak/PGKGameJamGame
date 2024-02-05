@@ -3,13 +3,6 @@ import Phaser from '../../lib/phaser';
 import AssetsKeys from '../helpers/AssetsKeys';
 import Hook from './Hook';
 
-import StateMachine from '../states/StateMachine';
-import IdleRunningState from '../states/onGroundState';
-import JumpingState from '../states/jumpingState';
-import onGrapplingHookState from '../states/onHookState';
-import FallingState from '../states/fallingState';
-import SlidingState from '../states/slidingState';
-
 const maxSpeedValue = 8;
 const minSpeedValue = -8;
 
@@ -50,23 +43,51 @@ export default class EntitySprite extends Phaser.Physics.Matter.Sprite {
     createAnimations() {
         this.scene.anims.create({
             key: 'idle',
-            frames: this.scene.anims.generateFrameNames(AssetsKeys.TEXTURES, {
+            frames: this.scene.anims.generateFrameNames(AssetsKeys.PLAYER, {
                 prefix: 'Player_Idle',
                 start: 1,
-                end: 4,
+                end: 9,
                 zeroPad: 1,
+                suffix: '',
             }),
             frameRate: 10,
             repeat: -1,
         });
-
+    
         this.scene.anims.create({
             key: 'run',
-            frames: this.scene.anims.generateFrameNames(AssetsKeys.TEXTURES, {
+            frames: this.scene.anims.generateFrameNames(AssetsKeys.PLAYER, {
                 prefix: 'Player_Run',
                 start: 1,
-                end: 8,
+                end: 4,
                 zeroPad: 1,
+                suffix: '',
+            }),
+            frameRate: 10,
+            repeat: 0,
+        });
+    
+        this.scene.anims.create({
+            key: 'jumping',
+            frames: this.scene.anims.generateFrameNames(AssetsKeys.PLAYER, {
+                prefix: 'Player_Jump',
+                start: 1,
+                end: 3,
+                zeroPad: 1,
+                suffix: '',
+            }),
+            frameRate: 10,
+            repeat: 0,
+        });
+    
+        this.scene.anims.create({
+            key: 'sliding',
+            frames: this.scene.anims.generateFrameNames(AssetsKeys.PLAYER, {
+                prefix: 'Player_Slide',
+                start: 1,
+                end: 4,
+                zeroPad: 1,
+                suffix: '',
             }),
             frameRate: 10,
             repeat: 0,
