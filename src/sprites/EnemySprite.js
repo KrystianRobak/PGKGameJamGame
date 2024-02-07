@@ -13,7 +13,6 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 export default class EnemySprite extends EntitySprite {
     constructor(scene, x, y, controller, recording, labelName) {
         super(scene, x, y, labelName);
-
         this.hook = new Hook(this.scene, this)
         this.jumpFlip = true;
 

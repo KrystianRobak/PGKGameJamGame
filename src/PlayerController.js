@@ -1,5 +1,5 @@
-import PlayerSprite from "./sprites/PlayerSprite";
 import AssetsKeys from "./helpers/AssetsKeys";
+import PlayerSprite from "./sprites/PlayerSprite";
 
 export default class PlayerController {
     constructor(scene) {
@@ -7,7 +7,7 @@ export default class PlayerController {
 
         this.keys = {
             keyA: this.scene.input.keyboard.addKey('A'),
-            keyW: this.scene.input.keyboard.addKey('W'),
+            keyW: this.scene.input.keyboard.addKey('SPACE'),
             keyD: this.scene.input.keyboard.addKey('D')
         }
 
@@ -24,7 +24,7 @@ export default class PlayerController {
         const sy = this.playerSprite.height / 2;
 
         const playerBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, sy, this.playerSprite.width/1.8, this.playerSprite.height-20);
-
+        playerBody.label = 'player';
         this.sensors = {
             bottom: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx, this.playerSprite.height, sx, 10, { isSensor: true , label: 'bottom'}),
             left: Phaser.Physics.Matter.Matter.Bodies.rectangle(sx - this.playerSprite.width * 0.30, sy, 5, this.playerSprite.height*0.80, { isSensor: true, label: 'left' }),
@@ -54,8 +54,6 @@ export default class PlayerController {
                 const bodyB = event.pairs[i].bodyB;
 
                 if(bodyA.label === 'bottom' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'bottom') {
-                    if(this.playerSprite.stateMachine.step == 'hook')
-                        continue;
                     if(this.blocked.right || this.blocked.left)
                         this.playerSprite.stateMachine.transition('sliding')
                     else
@@ -81,19 +79,11 @@ export default class PlayerController {
                         this.playerSprite.stateMachine.transition('sliding')
                     }
                 }
-                else if(bodyA.label === 'left' && bodyB.label === 'traps' || bodyA.label === 'traps' && bodyB.label === 'left') {
+                else if((bodyA.label === 'right' || bodyA.label === 'left' || bodyA.label === 'bottom' || bodyA.label === 'player') && bodyB.label === 'traps' || bodyA.label === 'traps' && (bodyB.label === 'player' || bodyB.label === 'right' || bodyB.label === 'left' || bodyB.label === 'bottom')) {
                     if(this.playerSprite.stateMachine.state != 'hook'){
-                        this.playerSprite.setPosition(200, 3400);
-                    }
-                }
-                else if(bodyA.label === 'right' && bodyB.label === 'traps' || bodyA.label === 'traps' && bodyB.label === 'right') {
-                    if(this.playerSprite.stateMachine.state != 'hook'){
-                        this.playerSprite.setPosition(200, 3400);
-                    }
-                }
-                else if(bodyA.label === 'bottom' && bodyB.label === 'traps' || bodyA.label === 'traps' && bodyB.label === 'bottom') {
-                    if(this.playerSprite.stateMachine.state != 'hook'){
-                        this.playerSprite.setPosition(200, 3400);
+                        this.scene.reset();
+                        this.scene.scene.pause()
+                        this.scene.scene.launch('GameOver')
                     }
                 }
             }
@@ -112,8 +102,10 @@ export default class PlayerController {
 
                 if (bodyA.label === 'right' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'right') {
                         this.blocked.right = false;
+                        this.playerSprite.stateMachine.transition('falling');
                 } else if (bodyA.label === 'left' && bodyB.label === 'platform' || bodyA.label === 'platform' && bodyB.label === 'left') {
                         this.blocked.left = false;
+                        this.playerSprite.stateMachine.transition('falling');
                 }
             }
         }, this);
@@ -126,18 +118,24 @@ export default class PlayerController {
 
                 if(bodyA.label === 'right' && bodyB.label === 'End' || bodyA.label === 'End' && bodyB.label === 'right') {
                     this.scene.clearLevel();
+                    this.scene.LevelRecordings.shift();
+                    this.playerSprite.hook.DeleteHook();
+                    this.playerSprite.setVelocity(0, 0);
                     this.playerSprite.setPosition(200, 3400)
                     this.scene.swapLevel(this.scene.levels.shift());
                 }
 
-                if(bodyA.label === 'starting' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'starting') {
+                if((bodyA.label === 'right' || bodyA.label === 'left' || bodyA.label === 'bottom') && bodyB.label === 'Ending' || bodyA.label === 'Ending' && (bodyB.label === 'right' || bodyB.label === 'left' || bodyB.label === 'bottom')) {
+                    this.scene.scene.pause()
+                    this.scene.scene.launch('Win')
+                }
+
+                if(bodyA.label === 'StartingRec' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'StartingRec') {
                     this.scene.startRecording();
                 }
-                if(bodyA.label === 'ending' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'ending') {
+                if(bodyA.label === 'EndingRec' && (bodyB.label === 'right' || bodyB.label === 'left' || bodyB.label === 'bottom') || (bodyA.label === 'right' || bodyA.label === 'left' || bodyA.label === 'bottom') && bodyB.label === 'EndingRec') {
                     this.scene.stopRecording();
                     this.scene.recorder.dumpRecordings();
-                    this.scene.clearLevel();
-                    this.scene.swapLevel(AssetsKeys.Level2);
                 }
                 if(bodyA.label === 'still' && bodyB.label === 'right' || bodyA.label === 'right' && bodyB.label === 'still') {
                     this.scene.stopRecording();

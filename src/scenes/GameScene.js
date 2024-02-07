@@ -8,39 +8,45 @@ import hook from '../../assets/images/hook.png';
 
 import PlayerController from '../PlayerController';
 
-import backgroundMiddleLevel1 from '../../assets/images/level12/background_Level1-1.png';
-import backgroundFarLevel1 from '../../assets/images/level12/background_Level1-2.png';
-import backgroundCloseLevel1 from '../../assets/images/level12/background_Level1-3.png';
-import backgroundGradientLevel1 from '../../assets/images/level12/background_Level1-4.png';
+import backgroundMiddleLevel1 from '../../assets/images/level1/background_Level1-1.png';
+import backgroundFarLevel1 from '../../assets/images/level1/background_Level1-2.png';
+import backgroundCloseLevel1 from '../../assets/images/level1/background_Level1-3.png';
+import backgroundGradientLevel1 from '../../assets/images/level1/background_Level1-4.png';
 
 // Level 2
-import backgroundMiddleLevel2 from '../../assets/images/level34/background_Level1-1.png';
-import backgroundFarLevel2 from '../../assets/images/level34/background_Level1-2.png';
-import backgroundCloseLevel2 from '../../assets/images/level34/background_Level1-3.png';
-import backgroundGradientLevel2 from '../../assets/images/level34/background_Level1-4.png';
+import backgroundMiddleLevel2 from '../../assets/images/level2/background_Level1-1.png';
+import backgroundFarLevel2 from '../../assets/images/level2/background_Level1-2.png';
+import backgroundCloseLevel2 from '../../assets/images/level2/background_Level1-3.png';
+import backgroundGradientLevel2 from '../../assets/images/level2/background_Level1-4.png';
 
 // Level 2
-import backgroundMiddleLevel3 from '../../assets/images/level56/background_Level1-1.png';
-import backgroundFarLevel3 from '../../assets/images/level56/background_Level1-2.png';
-import backgroundCloseLevel3 from '../../assets/images/level56/background_Level1-3.png';
-import backgroundGradientLevel3 from '../../assets/images/level56/background_Level1-4.png';
+import backgroundMiddleLevel3 from '../../assets/images/level3/background_Level1-1.png';
+import backgroundFarLevel3 from '../../assets/images/level3/background_Level1-2.png';
+import backgroundCloseLevel3 from '../../assets/images/level3/background_Level1-3.png';
+import backgroundGradientLevel3 from '../../assets/images/level3/background_Level1-4.png';
 
 // Level 3
-import backgroundMiddleLevel4 from '../../assets/images/level7/background_Level1-1.png';
-import backgroundFarLevel4 from '../../assets/images/level7/background_Level1-2.png';
-import backgroundCloseLevel4 from '../../assets/images/level7/background_Level1-3.png';
-import backgroundGradientLevel4 from '../../assets/images/level7/background_Level1-4.png';
+import backgroundMiddleLevel4 from '../../assets/images/level4/background_Level1-1.png';
+import backgroundFarLevel4 from '../../assets/images/level4/background_Level1-2.png';
+import backgroundCloseLevel4 from '../../assets/images/level4/background_Level1-3.png';
+import backgroundGradientLevel4 from '../../assets/images/level4/background_Level1-4.png';
 
 import mapLevel1 from '../../levels/1/level1.json';
 import mapLevel2 from '../../levels/2/level2.json';
 import mapLevel3 from '../../levels/3/level3.json';
 import mapLevel4 from '../../levels/4/level4.json';
 
+import enemyLevel1Recording1 from '../../levels/1/level1enemy1.json'
+
+import enemyLevel2Recording1 from '../../levels/2/level2enemy2.json'
+
+import enemyLevel3Recording1 from '../../levels/3/level3enemy3.json'
+
+import enemyLevel4Recording1 from '../../levels/4/level4enemy4.json'
+
 import EnemyController from '../EnemyController';
 
 import tiles from '../../assets/images/levelSprites.png';
-
-
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -50,6 +56,30 @@ export default class GameScene extends Phaser.Scene {
             AssetsKeys.Level3,
             AssetsKeys.Level4,
         ]
+
+        this.Level1Recordings = [
+            enemyLevel1Recording1,
+        ]
+
+        this.Level2Recordings = [
+            enemyLevel2Recording1,
+        ]
+
+        this.Level3Recordings = [
+            enemyLevel3Recording1,
+        ]
+
+        this.Level4Recordings = [
+            enemyLevel4Recording1,
+        ]
+        
+        this.LevelRecordings = [
+            this.Level1Recordings,
+            this.Level2Recordings,
+            this.Level3Recordings,
+            this.Level4Recordings
+        ]
+
 
         this.platforms = [] 
         this.dangerous = []
@@ -75,16 +105,16 @@ export default class GameScene extends Phaser.Scene {
         var progressBox = this.add.graphics();
 
         progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect(480, 540, 640, 100); // Scaled to 1920x1080
+        progressBox.fillRect(480, 540, 960, 100);
 
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
         var loadingText = this.make.text({
             x: width / 2,
-            y: height / 2 - 100, // Adjusted for scaling
+            y: height / 2 - 100,
             text: 'Loading...',
             style: {
-                font: '40px monospace', // Adjusted for scaling
+                font: '40px monospace',
                 fill: '#ffffff'
             }
         });
@@ -92,10 +122,10 @@ export default class GameScene extends Phaser.Scene {
 
         var percentText = this.make.text({
             x: width / 2,
-            y: height / 2 + 45, // Adjusted for scaling
+            y: height / 2 + 45,
             text: '0%',
             style: {
-                font: '36px monospace', // Adjusted for scaling
+                font: '36px monospace',
                 fill: '#ffffff'
             }
         });
@@ -103,25 +133,24 @@ export default class GameScene extends Phaser.Scene {
 
         var assetText = this.make.text({
             x: width / 2,
-            y: height / 2 + 150, // Adjusted for scaling
+            y: height / 2 + 150,
             text: '',
             style: {
-                font: '36px monospace', // Adjusted for scaling
+                font: '36px monospace',
                 fill: '#ffffff'
             }
         });
         assetText.setOrigin(0.5, 0.5);
 
         this.load.on('progress', function (value) {
-            console.log(value);
             progressBar.clear();
             progressBar.fillStyle(0xffffff, 1);
-            progressBar.fillRect(520, 570, 600 * value, 60); // Adjusted for scaling
+            progressBar.fillRect(520, 570, 880 * value, 60);
             percentText.setText(parseInt(value * 100) + '%');
         });
 
         this.load.on('fileprogress', function (file) {
-            assetText.setText('Loading asset: ' + file.src);
+            assetText.setText('Loading asset: ' + file.key);
         });
 
         this.load.on('complete', function () {
@@ -130,7 +159,6 @@ export default class GameScene extends Phaser.Scene {
             loadingText.destroy();
             percentText.destroy();
             assetText.destroy();
-            console.log('complete');
         });
 
         this.load.image(AssetsKeys.HOOK, hook);
@@ -153,10 +181,10 @@ export default class GameScene extends Phaser.Scene {
         this.load.image(AssetsKeys.Level3.BACKGROUNDFAR, backgroundFarLevel3);
         this.load.image(AssetsKeys.Level3.BACKGROUNDCLOSE, backgroundCloseLevel3);
 
-        this.load.image(AssetsKeys.Level3.BACKGROUNDGRADIENT, backgroundGradientLevel4);
-        this.load.image(AssetsKeys.Level3.BACKGROUNDMIDDLE, backgroundMiddleLevel4);
-        this.load.image(AssetsKeys.Level3.BACKGROUNDFAR, backgroundFarLevel4);
-        this.load.image(AssetsKeys.Level3.BACKGROUNDCLOSE, backgroundCloseLevel4);
+        this.load.image(AssetsKeys.Level4.BACKGROUNDGRADIENT, backgroundGradientLevel4);
+        this.load.image(AssetsKeys.Level4.BACKGROUNDMIDDLE, backgroundMiddleLevel4);
+        this.load.image(AssetsKeys.Level4.BACKGROUNDFAR, backgroundFarLevel4);
+        this.load.image(AssetsKeys.Level4.BACKGROUNDCLOSE, backgroundCloseLevel4);
 
         this.load.tilemapTiledJSON(AssetsKeys.Level1.TILEMAP, mapLevel1);
         this.load.tilemapTiledJSON(AssetsKeys.Level2.TILEMAP, mapLevel2);
@@ -177,12 +205,37 @@ export default class GameScene extends Phaser.Scene {
         this.swapLevel(AssetsKeys.Level1);
         this.playerController = new PlayerController(this);
         this.playerController.playerSprite.setPosition(200, 3400)
-        //this.enemyController = new EnemyController(this, 2);
         
         this.cameras.main.startFollow(this.playerController.playerSprite);
         this.playerController.playerSprite.createAnimations();
 
         this.recorder = new Recorder();
+
+        const esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)
+        esc.on('down', () => {
+            this.scene.switch('Pause')
+        })
+    }
+
+    reset() {
+        this.levels = [
+            AssetsKeys.Level2,
+            AssetsKeys.Level3,
+            AssetsKeys.Level4,
+        ]
+        console.log("reset be likeee")
+        console.log(this.Level1Recordings);
+        console.log(this.LevelRecordingsB);
+        this.LevelRecordings = [
+            this.Level1Recordings,
+            this.Level2Recordings,
+            this.Level3Recordings,
+            this.Level4Recordings
+        ];
+        this.clearLevel();
+        this.swapLevel(AssetsKeys.Level1);
+        this.playerController.playerSprite.setPosition(200, 3400);
+        this.playerController.playerSprite.setVelocity(0,0);
     }
 
     update() {
@@ -196,7 +249,7 @@ export default class GameScene extends Phaser.Scene {
             }
             this.recordingFrame = this.recordingFrame + 1;
         }
-        //this.enemyController.UpdateEnemies(this.num);
+        this.enemyController.UpdateEnemies(this.num);
         if(this.num == 10) {
             this.num = 0;
         }
@@ -220,11 +273,6 @@ export default class GameScene extends Phaser.Scene {
         this.backgroundFar.tilePositionX += this.playerController.playerSprite.body.velocity.x * 0.05;
         this.backgroundMiddle.tilePositionX += this.playerController.playerSprite.body.velocity.x * 0.1;
         this.backgroundClose.tilePositionX += this.playerController.playerSprite.body.velocity.x * 0.2;
-
-        // // this.background.tilePositionY += this.playerController.playerSprite.body.velocity.y * 0.025;
-        // this.backgroundFar.tilePositionY += this.playerController.playerSprite.body.velocity.y * 0.05;
-        // // this.backgroundMiddle.tilePositionY += this.playerController.playerSprite.body.velocity.y * 0.1;
-        // // this.backgroundClose.tilePositionY += this.playerController.playerSprite.body.velocity.y * 0.05;
     }
 
     clearLevel() {
@@ -239,6 +287,9 @@ export default class GameScene extends Phaser.Scene {
         });
         this.recordingPoints.forEach(elem => {
             this.matter.world.remove(elem);
+        });
+        this.enemyController.enemies.forEach(elem => {
+            elem.destroy();
         });
 
         this.platforms = [] 
@@ -262,8 +313,8 @@ export default class GameScene extends Phaser.Scene {
 
     swapLevel(keys) {
         this.background = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDGRADIENT).setOrigin(0)
-        this.backgroundMiddle = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDMIDDLE).setOrigin(0)
         this.backgroundFar = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDFAR).setOrigin(0)
+        this.backgroundMiddle = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDMIDDLE).setOrigin(0)
         this.backgroundClose = this.add.tileSprite(0,0,1920,1080,keys.BACKGROUNDCLOSE).setOrigin(0)
 
         this.background.setScrollFactor(0);
@@ -273,22 +324,23 @@ export default class GameScene extends Phaser.Scene {
 
         this.map = this.make.tilemap({key: keys.TILEMAP, tileWidth: 180, tileHeight: 180});
         this.tileset = this.map.addTilesetImage("levelSprites", AssetsKeys.TILESET);
-        this.platformLayer = this.map.createLayer("Platforms", this.tileset, 0, 0);
         this.dangerousLayer = this.map.createLayer("Dangerous", this.tileset, 0, 0);
+        this.platformLayer = this.map.createLayer("Platforms", this.tileset, 0, 0);
 
         var platformBodies = this.map.getObjectLayer("PlatformBodies");
-
-        platformBodies.objects.forEach(obj => {
-            const label = platformBodies.properties[0].value;
-            var platform = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true});
-            this.platforms.push(platform);
-        });
 
         var dangerousBodies = this.map.getObjectLayer("DangerousBodies");
         dangerousBodies.objects.forEach(obj => {
             const label = dangerousBodies.properties[0].value;
             var platform = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true});
             this.dangerous.push(platform);
+        });
+
+
+        platformBodies.objects.forEach(obj => {
+            const label = platformBodies.properties[0].value;
+            var platform = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true});
+            this.platforms.push(platform);
         });
 
         var gamePoints = this.map.getObjectLayer("GamePoints");
@@ -300,10 +352,13 @@ export default class GameScene extends Phaser.Scene {
 
         // var recordingBodies = this.map.getObjectLayer("RecordingPoints");
         // recordingBodies.objects.forEach(obj => {
+        //     console.log(obj)
         //     const label = obj.properties[0].value;
         //     var recordingPoint = this.matter.add.rectangle(obj.x + obj.width / 2, obj.y + obj.height / 2, obj.width, obj.height, { label: label, isStatic: true,isSensor: true});
         //     this.recordingPoints.push(recordingPoint);
         // });
+        this.cameras.main.setBounds(0, 0, 6300, 3600);
+        this.enemyController = new EnemyController(this, 1, this.LevelRecordings[0]);
 
         if(this.playerController)
              this.children.bringToTop(this.playerController.playerSprite);

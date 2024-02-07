@@ -37,6 +37,9 @@ export default {
         BACKGROUNDGRADIENT:'backgroundGradient4',
         
         TILEMAP:'tileMap4',
+    },
+    Tutorial: {
+        TILEMAP:'tutorialLevelk'
     }
 
 }

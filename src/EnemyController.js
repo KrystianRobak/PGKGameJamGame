@@ -1,27 +1,16 @@
 import EnemySprite from "./sprites/EnemySprite";
 
-import enemyLevel1Recording1 from '../levels/1/level1enemy1.json'
-import enemyLevel1Recording2 from '../levels/1/level1enemy2.json'
-
 const Sides = {
     right: 1,
     left: -1
 }
 
-const Level1Recordings = [
-    enemyLevel1Recording1,
-    enemyLevel1Recording2
-]
-
 export default class EnemyController {
-    constructor(scene, amount) {
+    constructor(scene, amount, controller) {
         this.scene = scene;
         this.enemiesAmount = amount;
-        this.recordings = Level1Recordings;
-        console.log(this.recordings)
-
+        this.recordings = controller;
         this.enemies = []
-
         this.populateEnemies();
     }
 
@@ -32,12 +21,15 @@ export default class EnemyController {
                 0,
                 this.scene.game.scale.gameSize.height / 2,
                 this,
-                Level1Recordings[i],
+                this.recordings[0],
                 'enemy');
 
+            enemySprite.setScale(0.8).setFixedRotation();;
             enemySprite.label = 'enemy';
+            enemySprite.setTint(0xff0000);
             enemySprite.setFixedRotation();
             enemySprite.setIgnoreGravity(true);
+            enemySprite.setSensor(true);
 
             this.scene.add.existing(enemySprite);
             this.enemies.push(enemySprite);
@@ -46,6 +38,11 @@ export default class EnemyController {
 
     UpdateEnemies(number) {
         for(var i = 0;i < this.enemiesAmount; i++) {
+            if(this.enemies[i].recordingNum == this.enemies[i].recording.length){
+                this.scene.reset();
+                this.scene.scene.start('GameOver');
+                return;
+            }
             if(number == 10) {
                 if(this.enemies[i].recordingNum < this.enemies[i].recording.length){
                     this.enemies[i].prevNums = this.enemies[i].currNums;

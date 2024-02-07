@@ -8,7 +8,7 @@ export default class Recorder {
     }
 
     recordFrame(player, input) {
-        if(player.hook.shootingHook){
+        if(player.hook.hitHook){
             this.recordings.push(
                 [player.x.toFixed(2),
                  player.y.toFixed(2),

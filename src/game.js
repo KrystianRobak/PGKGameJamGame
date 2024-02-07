@@ -1,8 +1,11 @@
 import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 import GameScene from './scenes/GameScene'
 import MainMenuScene from './scenes/MainMenuScene';
-import LevelSelectionScene from './scenes/LevelSelectionScene';
 import PauseScene from './scenes/PauseScene';
+import TutorialScene from './scenes/TutorialScene';
+import GameOverScene from './scenes/GameOverScene';
+import WinScene from './scenes/WinScene';
+import CreditsScene from './scenes/CreditsScene';
 
 export default new Phaser.Game({
     type: Phaser.AUTO,
@@ -11,6 +14,9 @@ export default new Phaser.Game({
     scale: {
         mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
         autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    audio: {
+        disableWebAudio: true
     },
     physics: {
         default: 'matter',
@@ -34,7 +40,7 @@ export default new Phaser.Game({
             // }
         }
     },
-    scene: [MainMenuScene,GameScene,LevelSelectionScene,PauseScene],
+    scene: [MainMenuScene,GameScene,GameOverScene,PauseScene,TutorialScene, WinScene, CreditsScene],
     plugins: {
         scene: [
             {

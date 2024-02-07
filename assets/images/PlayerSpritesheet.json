@@ -319,6 +319,86 @@
                 "w": 1800,
                 "h": 1800
             }
+        },
+        "Player_Slide5": {
+            "frame": {
+                "x": 800,
+                "y": 600,
+                "w": 200,
+                "h": 200
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1800,
+                "h": 1800
+            }
+        },
+        "Player_Slide6": {
+            "frame": {
+                "x": 1000,
+                "y": 600,
+                "w": 200,
+                "h": 200
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1800,
+                "h": 1800
+            }
+        },
+        "Player_Slide7": {
+            "frame": {
+                "x": 1200,
+                "y": 600,
+                "w": 200,
+                "h": 200
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1800,
+                "h": 1800
+            }
+        },
+        "Player_Slide8": {
+            "frame": {
+                "x": 1400,
+                "y": 600,
+                "w": 200,
+                "h": 200
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1800,
+                "h": 1800
+            }
+        },
+        "Player_Slide9": {
+            "frame": {
+                "x": 1600,
+                "y": 600,
+                "w": 200,
+                "h": 200
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 1800,
+                "h": 1800
+            }
         }
     },
     "meta": {
