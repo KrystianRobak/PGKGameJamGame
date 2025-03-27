@@ -24,3 +24,5 @@ https://krystianrobak.itch.io/ithos-trial
 Screenshots
 
 ![obraz](https://github.com/user-attachments/assets/c9305cda-02ae-455a-a520-f25468128360)
+
+![obraz](https://github.com/user-attachments/assets/03571640-b623-4e3c-b437-ff69c1962b70)
