@@ -25,4 +25,4 @@ Screenshots
 
 ![obraz](https://github.com/user-attachments/assets/c9305cda-02ae-455a-a520-f25468128360)
 
-![obraz](https://github.com/user-attachments/assets/03571640-b623-4e3c-b437-ff69c1962b70)
+![obraz](https://github.com/user-attachments/assets/ce84dbeb-8715-4b14-a628-5642c91f537a)
