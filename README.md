@@ -21,7 +21,7 @@ https://krystianrobak.itch.io/ithos-trial
 - **Dodge obstacles** and reach the end before your opponent.
 - **Survive** because dying means restarting from the beginning.
 
-Screenshots
+## Screenshots
 
 ![obraz](https://github.com/user-attachments/assets/c9305cda-02ae-455a-a520-f25468128360)
 
